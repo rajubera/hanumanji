@@ -111,12 +111,22 @@ export const SceneManager: ISceneManager = {
     },
     updateFogBasedOnZoom() {
         const zoomLevel = this.camera.position.z; // if perspective camera
+        const yLevel = this.camera.position.y; // if perspective camera
 
         if (zoomLevel > 30) {
             this.scene.fog = farFog;
         } else {
             this.scene.fog = nearFog;
+             if (yLevel < 0) {
+                this.camera.position.y = 0;
+            }
         }
+        if(zoomLevel > 100) {
+            this.camera.position.y = 10;
+        }
+        if (zoomLevel > 40) {
+            this.camera.position.y = 9;
+        } 
     },
 
     createCamera() {
