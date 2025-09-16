@@ -1,27 +1,30 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 function createFallingStar() {
-  const geometry = new THREE.SphereGeometry(0.2, 8, 8);
-  const material = new THREE.MeshBasicMaterial({ color: 0xffddaa }); // saffron-golden
-  const star = new THREE.Mesh(geometry, material);
+    const geometry = new THREE.SphereGeometry(0.2, 8, 8);
+    const material = new THREE.MeshBasicMaterial({ color: 0xffddaa }); // saffron-golden
+    const star = new THREE.Mesh(geometry, material);
 
-  // Randomize starting position (very far spread)
-  star.position.set(
-    (Math.random() - 0.5) * 600,   // X spread, -300 → +300
-    Math.random() * 400 + 100,     // Y, start much higher
-    -300 - Math.random() * 500     // Z, pushed far behind scene
-  );
+    // Randomize starting position (very far spread)
+    star.position.set(
+        (Math.random() - 0.5) * 600,   // X spread, -300 → +300
+        Math.random() * 400 + 100,     // Y, start much higher
+        -300 - Math.random() * 500     // Z, pushed far behind scene
+    );
 
-  // Each star gets velocity
-  star.userData.velocity = new THREE.Vector3(
-    (Math.random() - 0.5) * 0.02,
-    -0.2 - Math.random() * 0.1,   // faster downward fall
-    0
-  );
+    // Each star gets velocity
+    star.userData.velocity = new THREE.Vector3(
+        (Math.random() - 0.5) * 0.02,
+        -0.2 - Math.random() * 0.1,   // faster downward fall
+        0
+    );
 
-  return star;
+    return star;
 }
 
+
+const farFog = new THREE.FogExp2(0xff6600, 0.001);
+const nearFog = new THREE.FogExp2(0xff6600, 0.005);
 export type ISceneManager = {
     scene: THREE.Scene
     camera: THREE.PerspectiveCamera
@@ -46,6 +49,8 @@ export type ISceneManager = {
     createControls: () => void
     createFallingStars: () => void
     playBackgroundMusic: () => void
+    markIntroComplete: () => void
+    updateFogBasedOnZoom: () => void
 }
 export const SceneEvents = {
     INTRO_STARTED: "intro:complete",
@@ -83,8 +88,8 @@ export const SceneManager: ISceneManager = {
             // Deeper saffron & darker overall gradient
             const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
             gradient.addColorStop(0, '#361601ff');   // very dark saffron-brown glow
-            gradient.addColorStop(0.3, '#f17d08ff'); // deep earthy orange
-            gradient.addColorStop(0.7, '#1a0d0d'); // almost maroon-black
+            gradient.addColorStop(0.5, '#b4671aff'); // deep earthy orange
+            gradient.addColorStop(0.7, '#1a150dff'); // almost maroon-black
             gradient.addColorStop(1, '#000000');   // pure cosmic black
 
 
@@ -101,8 +106,17 @@ export const SceneManager: ISceneManager = {
         const scene = new THREE.Scene();
         // scene.background = new THREE.Color(0x000000);
         scene.background = this.createGradientTexture();
-        scene.fog = new THREE.FogExp2(0xff6600, 0.001); // saffron-tinted fog
+        scene.fog = new THREE.FogExp2(0xff6600, 0.0015); // saffron-tinted fog
         this.scene = scene;
+    },
+    updateFogBasedOnZoom() {
+        const zoomLevel = this.camera.position.z; // if perspective camera
+
+        if (zoomLevel > 30) {
+            this.scene.fog = farFog;
+        } else {
+            this.scene.fog = nearFog;
+        }
     },
 
     createCamera() {
@@ -149,14 +163,20 @@ export const SceneManager: ISceneManager = {
                     star.position.add(star.userData.velocity);
 
                     // Reset when they go too low
-                     if (star.position.y < -50) {
-      star.position.y = 400; // reset high
-      star.position.x = (Math.random() - 0.5) * 600;
-      star.position.z = -300 - Math.random() * 500;
-    }
+                    if (star.position.y < -50) {
+                        star.position.y = 400; // reset high
+                        star.position.x = (Math.random() - 0.5) * 600;
+                        star.position.z = -300 - Math.random() * 500;
+                    }
                 });
             }
         })
+    },
+
+    markIntroComplete() {
+        SceneManager.isIntroComplete = true;
+        SceneManager.clock = new THREE.Clock(); // reset clock for orbit phase
+        SceneManager.emitter.dispatchEvent(new CustomEvent(SceneEvents.INTRO_COMPLETE));
     },
 
     playBackgroundMusic() {
@@ -174,6 +194,7 @@ export const SceneManager: ISceneManager = {
         this.animationQueue.forEach(({ animate }) => {
             animate();
         })
+        this.updateFogBasedOnZoom();
         this.controls.update();
         this.renderer.render(this.scene, this.camera);
     }

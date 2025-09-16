@@ -34,9 +34,7 @@ export const IntroPlayer = () => {
                         camera.lookAt(0, 0, 0);
                         if (t >= 1) {
                             console.log('intro complete')
-                            SceneManager.isIntroComplete = true;
-                            SceneManager.clock = new THREE.Clock(); // reset clock for orbit phase
-                            SceneManager.emitter.dispatchEvent(new CustomEvent(SceneEvents.INTRO_COMPLETE));
+                          SceneManager.markIntroComplete();
                         }
                     }
 
