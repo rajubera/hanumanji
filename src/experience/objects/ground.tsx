@@ -4,7 +4,7 @@ import { SceneManager } from "../sceneManager";
 
 export const Ground = () => {
     useEffect(() => {
-        const { scene, animationQueue, clock } = SceneManager;
+        const { scene } = SceneManager;
 
         //plane
         const textureLoader = new THREE.TextureLoader();

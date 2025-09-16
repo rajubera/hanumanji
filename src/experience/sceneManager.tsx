@@ -169,7 +169,7 @@ export const SceneManager: ISceneManager = {
         this.scene.add(fallingStars);
         this.animationQueue.push({
             animate: () => {
-                fallingStars.children.forEach((star, i) => {
+                fallingStars.children.forEach((star) => {
                     star.position.add(star.userData.velocity);
 
                     // Reset when they go too low

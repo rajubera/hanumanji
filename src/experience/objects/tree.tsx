@@ -44,7 +44,7 @@ const tree = (treeGltf as GLTF).scene.clone();
 
 }
 
-export function addTree(scene: THREE.Scene, x: number, z: number, scale=1.5, q='l') {
+export function addTree(scene: THREE.Scene, x: number, z: number, scale=1.5) {
 if(treeGltf) {
    createTreeFromGltf(scene, x,  z, scale)
 } else {

@@ -14,7 +14,7 @@ export const Scene = () => {
     SceneManager.init();
 
     useEffect(() => {
-        const { scene, animationQueue, camera, clock, animate } = SceneManager;
+        const { camera } = SceneManager;
         camera.position.set(...SceneManager.initialPosition);
         camera.lookAt(0, 0, 0);
         console.log(SceneManager)

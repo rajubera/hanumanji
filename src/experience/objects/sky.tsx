@@ -61,7 +61,7 @@ export const Sky = () => {
         return stars;
       }
     useEffect(() => {
-        const { scene, animationQueue, clock } = SceneManager;
+        const { scene } = SceneManager;
         
         scene.add(createSky());
         scene.add(createStars());

@@ -4,7 +4,7 @@ import { addTree } from "./tree";
 
 export const Jungle = () => {
     useEffect(() => {
-        const { scene, animationQueue, clock } = SceneManager;
+        const { scene } = SceneManager;
         const treeCount = 6;
         const radius = 15;
 
@@ -14,7 +14,7 @@ export const Jungle = () => {
             const z = Math.sin(angle) * radius + (Math.random() - 0.5) * 4;
             const scale = 1.5 + Math.random() * 0.6; // random scale for variety
 
-            addTree(scene, x, z, scale, 'l');
+            addTree(scene, x, z, scale);
         }
 
 
@@ -29,7 +29,7 @@ export const Jungle = () => {
             const z = Math.sin(angle) * distance;
             const scale = 1.2 + Math.random() * 1.0;
 
-            addTree(scene, x, z, scale, 'l');
+            addTree(scene, x, z, scale);
         }
 
 

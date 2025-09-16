@@ -1,11 +1,10 @@
 import { useEffect } from "react"
 import * as THREE from "three";
-import { SceneEvents, SceneManager } from "../sceneManager";
+import { SceneManager } from "../sceneManager";
 
 
 export const IntroPlayer = () => {
     useEffect(() => {
-
         const { animationQueue } = SceneManager;
         animationQueue.push({
             animate: () => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { PageFlip, SizeType } from "page-flip";
 
 const CloseIcon = (props: any) => {
@@ -42,11 +42,7 @@ const FlipBook = ({ setIsBookOpen }: FlipBookProps) => {
 
     }, []);
 
-    const goToPage = (index: number) => {
-        if (pageFlipRef.current) {
-            pageFlipRef.current.flip(index);
-        }
-    };
+
 
     return (
         <div className="relative flex flex-col items-center flip-book">

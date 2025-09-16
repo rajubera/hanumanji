@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react"
+import { useEffect } from "react"
 import * as THREE from "three";
 import { GLTFLoader } from 'three-stdlib';
 import { SceneManager } from "../sceneManager";

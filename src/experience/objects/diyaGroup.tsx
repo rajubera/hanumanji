@@ -4,7 +4,7 @@ import { SceneManager } from "../sceneManager";
 
 export const DiyaGroup = () => {
     useEffect(() => {
-        const { scene, animationQueue, clock } = SceneManager;
+        const { scene, animationQueue } = SceneManager;
         // Create diya group
         const diyaGroup = new THREE.Group();
         diyaGroup.position.z = 2.8;

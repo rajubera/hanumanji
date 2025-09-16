@@ -2,7 +2,6 @@ import { LitUpDiyaBtn, SceneManager } from "../experience"
 import FlipBook from "./flipBook"
 import { Header } from "./header"
 import FloatingMenu, { type IFloatingMenuItem } from "./floatingMenu"
-import SacredBook from "./sacredBook"
 import { useState } from "react"
 import { AudioDisabled, AudioEnabled, BookOpen } from "./icons"
 
