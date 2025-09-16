@@ -1,0 +1,392 @@
+#root {
+  /* max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center; */
+  --hm-safron-color: #ff9933;
+  --hm-safron-linear-bg: linear-gradient(135deg, #ff9933 0%, #ff6600 50%, #ffcc33 100%);
+  --hm-safron-btn-box-shadow: 0 4px 12px rgba(255, 102, 0, 0.5);
+}
+
+* {
+  outline: none !important;
+  user-select: none;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:hover {
+  border-color: #646cff;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: var(--hm-safron-color);
+  }
+
+  a:hover {
+    color: var(--hm-safron-color);
+  }
+
+  button {
+    background-color: var(--hm-safron-linear-bg);
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+
+.header {
+  position: fixed;
+  top: 0px;
+  padding: 12px 50px;
+
+}
+
+.hanuman-logo-text {
+
+  background-image: linear-gradient(to right, rgb(240, 153, 66), rgb(237, 201, 94), rgb(201, 29, 29));
+  color: transparent;
+  background-clip: text;
+
+  font-size: 24px;
+}
+
+
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* scene still interactive */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.content-card {
+  background: rgba(20, 20, 20, 0.8);
+  border: 2px solid #ff9933;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  max-width: 400px;
+  color: #f5f5f5;
+  font-family: 'Georgia', serif;
+  text-align: center;
+  pointer-events: all;
+  /* so button is clickable */
+  font-family: 'Cinzel Decorative', serif;
+}
+
+.content-card h2 {
+  /* color: rgb(255, 179, 0); */
+  margin-bottom: 0.5rem;
+}
+
+.content-card button {
+  margin-top: 1rem;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--hm-safron-linear-bg);
+  box-shadow: var(--hm-safron-btn-box-shadow);
+  color: #222;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Cinzel Decorative', serif;
+
+
+}
+
+.litup-btn {
+  pointer-events: all;
+  background: var(--hm-safron-linear-bg);
+  color: #222;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Cinzel Decorative', serif;
+  border: none;
+  box-shadow: var(--hm-safron-btn-box-shadow);
+}
+
+.menu-stack {
+  position: fixed;
+  right: 10px;
+  opacity: 0.7;
+}
+
+.menu-stack:hover {
+  opacity: 1;
+}
+
+
+/* styles.css */
+.bg-oldpaper {
+  background: url("https://www.transparenttextures.com/patterns/aged-paper.png");
+  background-color: #fdf6e3;
+  background-size: cover;
+  border: 2px solid #d4af37;
+  border-radius: 6px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+  font-family: "Goudy Bookletter 1911", serif;
+}
+
+/* overlay UI */
+.overlay-ui {
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  /* above canvas */
+  pointer-events: none;
+  /* disables blocking clicks globally */
+}
+
+/* interactive elements */
+.overlay-ui button,
+.overlay-ui .flip-book {
+  pointer-events: auto;
+  /* re-enable clicks only on real UI */
+}
+
+
+/* FlipBook container */
+.flip-book {
+  width: 80vw;
+  height: calc(100vh - 50px);
+  margin: auto;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+}
+
+.book-close-icon {
+  color: var(--hm-safron-color);
+  height: 30px;
+  position: absolute;
+  right: -30px;
+  top: 10px;
+  cursor: pointer;
+}
+
+#book-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  /* full width */
+  height: 100vh;
+  /* full height */
+  background: #222;
+}
+
+.page {
+  font-size: 1.2rem;
+  width: 100%;
+  height: 100%;
+  display: block;
+  margin: 0 !important;
+  padding: 40px;
+  /* text padding only */
+  box-sizing: border-box;
+  background: url('/textures/book/parchment.jpg') center/cover no-repeat;
+}
+
+
+
+
+/* Page headings */
+.page h2 {
+  font-family: 'Cinzel Decorative', serif;
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #6b1d1d;
+  /* maroon */
+  border-bottom: 2px solid #b8860b;
+  padding-bottom: 5px;
+}
+
+
+
+.floating-menu {
+  position: fixed;
+  width: 61px;
+  bottom: 20px;
+  height: auto;
+  padding: 15px 0;
+  pointer-events: all;
+}
+
+.floating-menu.right {
+  right: 30px;
+}
+
+.floating-menu.left {
+  left: 30px;
+}
+
+.floating-menu-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--hm-safron-color);
+}
+
+.floating-menu-item .icon {
+  color: var(--hm-safron-color);
+  width: 100%;
+  height: 35px;
+  cursor: pointer;
+}
+
+.book-icon {
+  color: var(--hm-safron-color);
+  width: 100%;
+  height: 35px;
+  cursor: pointer;
+}
+
+
+/* 
+.book-wrapper:hover .book-icon path {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: drawGlow 6s linear infinite;
+}
+
+@keyframes drawGlow {
+  0% { stroke-dashoffset: 60; stroke: #ffb400; }
+  50% { stroke-dashoffset: 0; stroke: #ffd700; }
+  100% { stroke-dashoffset: 60; stroke: #ffb400; }
+}  */
+
+.book-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.aura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid var(--hm-safron-color);
+  transform: translate(-50%, -50%);
+  animation: ripple 3s infinite;
+  opacity: 0.6;
+}
+
+.aura:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.aura:nth-child(2) {
+  animation-delay: 1s;
+}
+
+.aura:nth-child(3) {
+  animation-delay: 2s;
+}
+
+@keyframes ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+
+
+.hanumanji-intro-container {
+  position: relative;
+}
+
+.hanuman-ji-image-wrap {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: calc(-100% + 20px);
+  width: calc(100% - 48px);
+}
+
+.hanumanji-intro-image {
+  height: 250px;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+
+
+/* Tooltip base */
+.custom-tooltip {
+  background: rgba(0, 0, 0, 0.8) !important;
+  /* dark transparent */
+  border: 1px solid var(--hm-safron-color) !important;
+  /* golden border */
+  color: #f8e9a1 !important;
+  /* soft golden text */
+  font-family: 'Merriweather', serif;
+  /* gives it sacred/book vibe */
+  font-size: 0.9rem !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  max-width: 220px;
+  text-align: center;
+  backdrop-filter: blur(4px);
+  /* frosted effect */
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  /* subtle glow */
+  transition: all 0.3s ease;
+}
+
+/* Tooltip arrow */
+.custom-tooltip.place-top::after {
+  border-top-color: gold !important;
+}
+
+.custom-tooltip.place-bottom::after {
+  border-bottom-color: gold !important;
+}
+
+.custom-tooltip.place-left::after {
+  border-left-color: gold !important;
+}
+
+.custom-tooltip.place-right::after {
+  border-right-color: gold !important;
+}
