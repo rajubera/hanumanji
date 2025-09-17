@@ -401,3 +401,15 @@ button:focus-visible {
 .hm-btn:hover {
   transform: scale(1.05);
 }
+
+
+/* mobile fix */
+@media only screen and (max-width: 600px) {
+  .floating-menu.right {
+  right: 20px;
+}
+
+.floating-menu.left {
+  left: 20px;
+}
+}
