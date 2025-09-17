@@ -24,7 +24,7 @@ function createFallingStar() {
 
 
 const farFog = new THREE.FogExp2(0xff6600, 0.001);
-const nearFog = new THREE.FogExp2(0xff6600, 0.005);
+const nearFog = new THREE.FogExp2(0xff6600, 0.004);
 export type ISceneManager = {
     scene: THREE.Scene
     camera: THREE.PerspectiveCamera
@@ -33,7 +33,8 @@ export type ISceneManager = {
     clock: THREE.Clock
     hanuman?: THREE.Group<THREE.Object3DEventMap>
     diyaGroup?: THREE.Group
-    initialPosition: [number, number, number]
+    initialPosition: [number, number, number],
+    initialIntroPosition: [number, number, number]
     introDuration: number
     isIntroStarted: boolean
     isIntroComplete: boolean
@@ -64,7 +65,8 @@ export const SceneManager: ISceneManager = {
     clock: new THREE.Clock(),
     // initialPosition: [0, 0, 0],
     initialPosition: [0, 60, 410],
-    introDuration: 10, // seconds for intro
+     initialIntroPosition: [0, 10, 1110],
+    introDuration: 15, // seconds for intro
     isIntroStarted: false,
     isIntroComplete: false,
     emitter: new EventTarget(),

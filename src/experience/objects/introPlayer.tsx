@@ -17,7 +17,7 @@ export const IntroPlayer = () => {
 
                         // Start position (far away)
                         // const startPos = new THREE.Vector3(0, 25, 100);
-                        const startPos = new THREE.Vector3(...SceneManager.initialPosition)
+                        const startPos = new THREE.Vector3(...SceneManager.initialIntroPosition)
 
                         // End position (closer to Hanuman)
                         const endPos = new THREE.Vector3(0, 1.3, 7.5);
