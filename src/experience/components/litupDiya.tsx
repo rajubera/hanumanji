@@ -6,7 +6,6 @@ export const LitUpDiyaBtn = () => {
   const maxDiyas = 5;
 
   const addNewDiya = () => {
-    console.log('called add new')
     const { diyaGroup } = SceneManager;
     if (diyaCount < maxDiyas) {
       diyaCount++;
@@ -19,10 +18,11 @@ export const LitUpDiyaBtn = () => {
       diya.position.set(Math.cos(angle) * radius * 1, 0, Math.sin(angle) * radius);
 
       diyaGroup?.add(diya);
+      SceneManager.camera.position.set(...SceneManager.defaultPosition);
     }
   }
   return <>
-    <button className="litup-btn action-menu-button" onClick={addNewDiya} title="Light up virtual Diya"
+    <button className="litup-btn action-menu-button hm-btn" onClick={addNewDiya} title="Light up virtual Diya"
     >
       🪔 Light up virtual Diya
     </button>

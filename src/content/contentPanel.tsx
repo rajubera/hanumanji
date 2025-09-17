@@ -8,7 +8,6 @@ export const ContentPanel = () => {
     const [isIntroComplete, setIsIntroComplete] = useState(false);
     useEffect(() => {
         const fn = () => {
-            console.log('called intro complete')
             setIsIntroComplete(true)
         };
         SceneManager.emitter.addEventListener(SceneEvents.INTRO_COMPLETE, fn);

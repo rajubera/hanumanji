@@ -4,7 +4,8 @@
   padding: 2rem;
   text-align: center; */
   --hm-safron-color: #ff9933;
-  --hm-safron-linear-bg: linear-gradient(135deg, #ff9933 0%, #ff6600 50%, #ffcc33 100%);
+  /* --hm-safron-linear-bg: linear-gradient(135deg, #ff9933 0%, #ff6600 50%, #ffcc33 100%); */
+  --hm-safron-linear-bg:  linear-gradient(90deg, #e65100, #ffb300, #e65100);
   --hm-safron-btn-box-shadow: 0 4px 12px rgba(255, 102, 0, 0.5);
 }
 
@@ -108,7 +109,7 @@ button:focus-visible {
   margin-top: 1rem;
   padding: 0.6rem 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 999px;
   background: var(--hm-safron-linear-bg);
   box-shadow: var(--hm-safron-btn-box-shadow);
   color: #222;
@@ -127,6 +128,7 @@ button:focus-visible {
   cursor: pointer;
   font-family: 'Cinzel Decorative', serif;
   border: none;
+  border-radius: 999px;
   box-shadow: var(--hm-safron-btn-box-shadow);
 }
 
@@ -179,7 +181,7 @@ button:focus-visible {
   width: 80vw;
   height: calc(100vh - 50px);
   margin: auto;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+  /* box-shadow: 0 0 40px rgba(0, 0, 0, 0.4); */
   border-radius: 8px;
 }
 
@@ -389,4 +391,13 @@ button:focus-visible {
 
 .custom-tooltip.place-right::after {
   border-right-color: gold !important;
+}
+
+.hm-btn {
+  background: var(--hm-safron-linear-bg);
+  box-shadow: var(--hm-safron-btn-box-shadow);
+  border-radius: 999px;
+}
+.hm-btn:hover {
+  transform: scale(1.05);
 }

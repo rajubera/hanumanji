@@ -7,8 +7,7 @@ export const IntroCard = ({ setIsIntroStarted }: { setIsIntroStarted: (f: boolea
 
     const startIntro = () => {
         setIsIntroStarted(true);
-        SceneManager.isIntroStarted = true;
-        SceneManager.playBackgroundMusic();
+        SceneManager.startIntro();
     }
 
     return <>
@@ -23,7 +22,7 @@ export const IntroCard = ({ setIsIntroStarted }: { setIsIntroStarted: (f: boolea
                 Each diya  you light spreads warmth and positivity.
                 Join in by lighting up to <strong>5 diyas</strong> around Hanuman Ji.
             </p>
-            <button onClick={startIntro}>Experience 🪔 aura</button>
+            <button className="hm-btn" onClick={startIntro}>Experience 🪔 aura</button>
         </div>
     </>
 }

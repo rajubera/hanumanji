@@ -21,6 +21,7 @@ export const IntroPlayer = () => {
 
                         // End position (closer to Hanuman)
                         const endPos = new THREE.Vector3(0, 1.3, 7.5);
+                       
 
                         // Lerp between start and end
                         camera.position.lerpVectors(startPos, endPos, t);
@@ -32,7 +33,6 @@ export const IntroPlayer = () => {
                         // Always look at Hanuman
                         camera.lookAt(0, 0, 0);
                         if (t >= 1) {
-                            console.log('intro complete')
                           SceneManager.markIntroComplete();
                         }
                     }

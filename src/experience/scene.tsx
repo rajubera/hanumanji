@@ -17,7 +17,6 @@ export const Scene = () => {
         const { camera } = SceneManager;
         camera.position.set(...SceneManager.initialPosition);
         camera.lookAt(0, 0, 0);
-        console.log(SceneManager)
         SceneManager.animate();
         window.addEventListener("resize", () => {
             const { camera, renderer } = SceneManager;

@@ -35,6 +35,7 @@ export type ISceneManager = {
     diyaGroup?: THREE.Group
     initialPosition: [number, number, number],
     initialIntroPosition: [number, number, number]
+    defaultPosition: [number, number, number]
     introDuration: number
     isIntroStarted: boolean
     isIntroComplete: boolean
@@ -50,6 +51,7 @@ export type ISceneManager = {
     createControls: () => void
     createFallingStars: () => void
     playBackgroundMusic: () => void
+    startIntro: () => void
     markIntroComplete: () => void
     updateFogBasedOnZoom: () => void
 }
@@ -65,7 +67,8 @@ export const SceneManager: ISceneManager = {
     clock: new THREE.Clock(),
     // initialPosition: [0, 0, 0],
     initialPosition: [0, 60, 410],
-     initialIntroPosition: [0, 10, 1110],
+    initialIntroPosition: [0, 10, 1110],
+    defaultPosition: [0, 1.3, 7.5],
     introDuration: 15, // seconds for intro
     isIntroStarted: false,
     isIntroComplete: false,
@@ -77,8 +80,7 @@ export const SceneManager: ISceneManager = {
         this.createCamera();
         this.createRenderer();
         this.createControls();
-        // this.createFallingStars();
-
+        this.renderer.compile(this.scene, this.camera)
 
     },
     createGradientTexture() {
@@ -119,16 +121,16 @@ export const SceneManager: ISceneManager = {
             this.scene.fog = farFog;
         } else {
             this.scene.fog = nearFog;
-             if (yLevel < 0) {
+            if (yLevel < 0) {
                 this.camera.position.y = 0;
             }
         }
-        if(zoomLevel > 100) {
+        if (zoomLevel > 100) {
             this.camera.position.y = 10;
         }
         if (zoomLevel > 40) {
             this.camera.position.y = 9;
-        } 
+        }
     },
 
     createCamera() {
@@ -183,6 +185,12 @@ export const SceneManager: ISceneManager = {
                 });
             }
         })
+    },
+
+    startIntro() {
+        this.clock = new THREE.Clock();
+        SceneManager.isIntroStarted = true;
+        SceneManager.playBackgroundMusic();
     },
 
     markIntroComplete() {

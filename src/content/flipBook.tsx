@@ -74,6 +74,7 @@ const FlipBook = ({ setIsBookOpen }: FlipBookProps) => {
                                 border: "none",
                                 transition: "all 0.3s ease"
                             }}
+                            className="hm-btn"
                             onMouseOver={(e) => {
                                 e.currentTarget.style.transform = "scale(1.05)";
                                 e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.3)";
