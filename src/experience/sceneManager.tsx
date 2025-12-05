@@ -203,11 +203,10 @@ export const SceneManager: ISceneManager = {
         if (SceneManager.backgroundMusic.current) {
             SceneManager.backgroundMusic.current.currentTime = 30;
             SceneManager.backgroundMusic.current.volume = 0.2;
-            SceneManager.backgroundMusic.current?.play()
+            SceneManager.backgroundMusic.current?.play();
+            localStorage.setItem('isAudioEnabled', 'true');
         }
     },
-
-
 
     animate: function () {
         requestAnimationFrame(this.animate.bind(this));
@@ -218,4 +217,4 @@ export const SceneManager: ISceneManager = {
         this.controls.update();
         this.renderer.render(this.scene, this.camera);
     }
-} 
+}

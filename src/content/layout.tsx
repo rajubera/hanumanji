@@ -2,7 +2,7 @@ import { LitUpDiyaBtn, SceneManager } from "../experience"
 import FlipBook from "./flipBook"
 import { Header } from "./header"
 import FloatingMenu, { type IFloatingMenuItem } from "./floatingMenu"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { AudioDisabled, AudioEnabled, BookOpen } from "./icons"
 
 export const ContentLayout = () => {
@@ -17,12 +17,24 @@ export const ContentLayout = () => {
 
     ];
     const AudioControl = () => {
-        const [isRunning, setIsRunning] = useState(true);
+        const [isRunning, setIsRunning] = useState(() => {
+            const saved = localStorage.getItem('isAudioEnabled');
+            return saved !== null ? JSON.parse(saved) : true;
+        });
+
+        useEffect(() => {
+            if (isRunning) {
+                SceneManager.backgroundMusic.current?.play();
+            } else {
+                SceneManager.backgroundMusic.current?.pause();
+            }
+        }, [isRunning]);
 
         const toggleAudio = () => {
-            isRunning ? SceneManager.backgroundMusic.current?.pause() : SceneManager.backgroundMusic.current?.play();
-            
-            setIsRunning(!isRunning)
+            const newRunning = !isRunning;
+            setIsRunning(newRunning);
+            localStorage.setItem('isAudioEnabled', JSON.stringify(newRunning));
+            newRunning ? SceneManager.backgroundMusic.current?.play() : SceneManager.backgroundMusic.current?.pause();
         }
 
         return <div onClick={toggleAudio} className="book-wrapper" data-tooltip-id="globalTooltip"

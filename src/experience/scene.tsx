@@ -5,6 +5,7 @@ import { HanumanJi } from "./objects/hanumanji";
 import { IntroPlayer } from "./objects/introPlayer";
 import { Jungle } from "./objects/jungle";
 import { Lights } from "./objects/lights";
+import { PrayingMonkey } from "./objects/prayingMonkey";
 import { Sky } from "./objects/sky";
 import { SceneManager } from "./sceneManager";
 import { useEffect } from "react";
@@ -32,6 +33,7 @@ export const Scene = () => {
         <Jungle></Jungle>
         <HanumanJi></HanumanJi>
         <DiyaGroup></DiyaGroup>
+        <PrayingMonkey></PrayingMonkey>
         <IntroPlayer></IntroPlayer>
         <BackgroundMusic></BackgroundMusic>
 
