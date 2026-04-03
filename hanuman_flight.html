@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanuman's Divine Flight</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        #gameContainer {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            height: 640px;
+            background: linear-gradient(to bottom, #87CEEB 0%, #FFA07A 100%);
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+        }
+
+        #startScreen, #gameOverScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(20,20,40,0.9) 100%);
+            backdrop-filter: blur(10px);
+            color: white;
+            z-index: 10;
+            padding: 40px 30px;
+        }
+
+        #gameOverScreen {
+            display: none;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 38px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6347 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 20px rgba(255,215,0,0.3);
+            margin-bottom: 10px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: #FFD700;
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        .story-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,215,0,0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            max-width: 90%;
+            backdrop-filter: blur(5px);
+        }
+
+        .story-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #E0E0E0;
+            text-align: center;
+            font-weight: 300;
+        }
+
+        button {
+            padding: 16px 50px;
+            font-size: 18px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255,107,53,0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover:before {
+            left: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(255,107,53,0.5), inset 0 1px 0 rgba(255,255,255,0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 15px rgba(255,107,53,0.3);
+        }
+
+        #score {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 56px;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            color: white;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.6);
+            z-index: 5;
+            letter-spacing: 3px;
+        }
+
+        #highScore {
+            position: absolute;
+            top: 95px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.9);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            z-index: 5;
+            background: rgba(0,0,0,0.3);
+            padding: 6px 18px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 25px 0;
+            max-width: 90%;
+        }
+
+        .control-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,215,0,0.2);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .control-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .control-text {
+            font-size: 12px;
+            color: #E0E0E0;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .control-text strong {
+            color: #FFD700;
+            font-weight: 600;
+        }
+
+        #finalScore {
+            font-size: 36px;
+            font-family: 'Cinzel', serif;
+            margin: 20px 0;
+            color: #FFD700;
+            text-shadow: 0 2px 15px rgba(255,215,0,0.5);
+            font-weight: 700;
+        }
+
+        .tip {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 20px;
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #FFD700, transparent);
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+        <div id="score">0</div>
+        <div id="highScore">Best: 0</div>
+
+        <div id="startScreen">
+            <h1>🙏 HANUMAN'S DIVINE FLIGHT</h1>
+            <div class="subtitle">The Legend of Bal Hanuman</div>
+            
+            <div class="divider"></div>
+            
+            <div class="story-box">
+                <div class="story-text">
+                    When young Hanuman mistook the sun for a ripe mango,<br>
+                    he flew towards it with divine speed!<br><br>
+                    Now guide Bal Hanuman through the sacred mountains<br>
+                    using his mighty powers.
+                </div>
+            </div>
+            
+            <button onclick="startGame()">Begin Journey</button>
+            
+            <div class="controls-grid">
+                <div class="control-item">
+                    <div class="control-icon">🖱️</div>
+                    <div class="control-text"><strong>Tap</strong> to fly</div>
+                </div>
+                <div class="control-item">
+                    <div class="control-icon">⌨️</div>
+                    <div class="control-text"><strong>Space</strong> to jump</div>
+                </div>
+                <div class="control-item">
+                    <div class="control-icon">🪷</div>
+                    <div class="control-text">Collect <strong>lotus</strong></div>
+                </div>
+                <div class="control-item">
+                    <div class="control-icon">🔥</div>
+                    <div class="control-text">Mountains <strong>ignite</strong></div>
+                </div>
+            </div>
+            
+            <div class="tip">Difficulty increases as your journey progresses</div>
+        </div>
+
+        <div id="gameOverScreen">
+            <h1>JAI HANUMAN 🙏</h1>
+            <div class="subtitle">Your Divine Journey Pauses</div>
+            
+            <div class="divider"></div>
+            
+            <div id="finalScore">Score: 0</div>
+            
+            <div class="story-box">
+                <div class="story-text">
+                    Even the mighty Hanuman rests between adventures.<br>
+                    Rise again and surpass your legend!
+                </div>
+            </div>
+            
+            <button onclick="restartGame()">Continue Journey</button>
+            
+            <div class="tip">The path grows harder with each passing moment</div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size
+        canvas.width = 480;
+        canvas.height = 640;
+
+        // Game variables
+        let gameStarted = false;
+        let gameOver = false;
+        let score = 0;
+        let highScore = localStorage.getItem('hanumanHighScore') || 0;
+        document.getElementById('highScore').textContent = `Best: ${highScore}`;
+
+        // Hanuman
+        const hanuman = {
+            x: 80,
+            y: canvas.height / 2,
+            width: 50,
+            height: 50,
+            velocity: 0,
+            gravity: 0.5,
+            jump: -9,
+            rotation: 0
+        };
+
+        // Obstacles
+        let obstacles = [];
+        const obstacleWidth = 60;
+        let gap = 200; // Starting gap (easier)
+        let obstacleSpeed = 2.5; // Starting speed (slower)
+        let frameCount = 0;
+        let spawnRate = 110; // Starting spawn rate (more time between obstacles)
+
+        // Fire particles
+        let fireParticles = [];
+
+        // Adjust difficulty based on score
+        function adjustDifficulty() {
+            // Every 5 points, make it slightly harder
+            if (score >= 5 && score < 15) {
+                gap = 190;
+                obstacleSpeed = 2.7;
+                spawnRate = 105;
+            } else if (score >= 15 && score < 30) {
+                gap = 180;
+                obstacleSpeed = 3;
+                spawnRate = 95;
+            } else if (score >= 30 && score < 50) {
+                gap = 170;
+                obstacleSpeed = 3.3;
+                spawnRate = 85;
+            } else if (score >= 50) {
+                gap = 160;
+                obstacleSpeed = 3.6;
+                spawnRate = 80;
+            }
+        }
+
+        // Lotus flowers
+        let lotuses = [];
+
+        // Clouds for background
+        let clouds = [];
+        for (let i = 0; i < 5; i++) {
+            clouds.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * 200,
+                width: 60 + Math.random() * 40,
+                speed: 0.5 + Math.random() * 0.5
+            });
+        }
+
+        // Draw Hanuman (Bal Hanuman style)
+        function drawHanuman() {
+            ctx.save();
+            ctx.translate(hanuman.x + hanuman.width / 2, hanuman.y + hanuman.height / 2);
+            ctx.rotate(hanuman.rotation);
+            
+            const scale = hanuman.width / 40;
+            
+            // Tail (curved)
+            ctx.strokeStyle = '#8B4513';
+            ctx.lineWidth = 3 * scale;
+            ctx.beginPath();
+            ctx.moveTo(15 * scale, 0);
+            ctx.quadraticCurveTo(25 * scale, -10 * scale, 30 * scale, -5 * scale);
+            ctx.stroke();
+            
+            // Body (orange dhoti)
+            ctx.fillStyle = '#FF6600';
+            ctx.beginPath();
+            ctx.ellipse(0, 5 * scale, 12 * scale, 15 * scale, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Golden belt
+            ctx.fillStyle = '#FFD700';
+            ctx.fillRect(-12 * scale, -2 * scale, 24 * scale, 4 * scale);
+            
+            // Arms
+            ctx.fillStyle = '#D2691E';
+            // Left arm
+            ctx.beginPath();
+            ctx.ellipse(-10 * scale, 5 * scale, 4 * scale, 12 * scale, -0.3, 0, Math.PI * 2);
+            ctx.fill();
+            // Right arm (holding gada)
+            ctx.beginPath();
+            ctx.ellipse(10 * scale, 5 * scale, 4 * scale, 12 * scale, 0.3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Gada (mace)
+            ctx.fillStyle = '#8B7355';
+            ctx.fillRect(12 * scale, 8 * scale, 2 * scale, 15 * scale);
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.arc(13 * scale, 8 * scale, 4 * scale, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Head (monkey face)
+            ctx.fillStyle = '#D2691E';
+            ctx.beginPath();
+            ctx.arc(0, -8 * scale, 14 * scale, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Face area (lighter)
+            ctx.fillStyle = '#E8A87C';
+            ctx.beginPath();
+            ctx.ellipse(0, -6 * scale, 10 * scale, 11 * scale, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Ears
+            ctx.fillStyle = '#D2691E';
+            ctx.beginPath();
+            ctx.arc(-12 * scale, -8 * scale, 5 * scale, 0, Math.PI * 2);
+            ctx.arc(12 * scale, -8 * scale, 5 * scale, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Eyes (large innocent eyes)
+            ctx.fillStyle = '#FFF';
+            ctx.beginPath();
+            ctx.arc(-5 * scale, -8 * scale, 4 * scale, 0, Math.PI * 2);
+            ctx.arc(5 * scale, -8 * scale, 4 * scale, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Pupils
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.arc(-5 * scale, -8 * scale, 2 * scale, 0, Math.PI * 2);
+            ctx.arc(5 * scale, -8 * scale, 2 * scale, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Nose
+            ctx.fillStyle = '#C19A6B';
+            ctx.beginPath();
+            ctx.ellipse(0, -3 * scale, 3 * scale, 4 * scale, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Smile
+            ctx.strokeStyle = '#8B4513';
+            ctx.lineWidth = 2 * scale;
+            ctx.beginPath();
+            ctx.arc(0, -3 * scale, 5 * scale, 0.2, Math.PI - 0.2);
+            ctx.stroke();
+            
+            // Crown/Mukut
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.moveTo(-10 * scale, -18 * scale);
+            ctx.lineTo(-5 * scale, -25 * scale);
+            ctx.lineTo(0, -22 * scale);
+            ctx.lineTo(5 * scale, -25 * scale);
+            ctx.lineTo(10 * scale, -18 * scale);
+            ctx.lineTo(8 * scale, -15 * scale);
+            ctx.lineTo(-8 * scale, -15 * scale);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Crown jewels
+            ctx.fillStyle = '#FF0000';
+            ctx.beginPath();
+            ctx.arc(0, -22 * scale, 2 * scale, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#00FF00';
+            ctx.beginPath();
+            ctx.arc(-5 * scale, -24 * scale, 1.5 * scale, 0, Math.PI * 2);
+            ctx.arc(5 * scale, -24 * scale, 1.5 * scale, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Tilak (forehead mark)
+            ctx.fillStyle = '#FF6600';
+            ctx.beginPath();
+            ctx.ellipse(0, -12 * scale, 2 * scale, 4 * scale, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.restore();
+        }
+
+        // Draw cloud
+        function drawCloud(cloud) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.beginPath();
+            ctx.arc(cloud.x, cloud.y, cloud.width / 3, 0, Math.PI * 2);
+            ctx.arc(cloud.x + cloud.width / 3, cloud.y - 10, cloud.width / 4, 0, Math.PI * 2);
+            ctx.arc(cloud.x + cloud.width / 2, cloud.y, cloud.width / 3, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Draw obstacle (mountain)
+        function drawObstacle(obs) {
+            // Top mountain
+            if (obs.topHeight > 0) {
+                ctx.fillStyle = obs.onFire ? '#8B0000' : '#8B4513';
+                ctx.beginPath();
+                ctx.moveTo(obs.x, 0);
+                ctx.lineTo(obs.x + obstacleWidth / 2, obs.topHeight);
+                ctx.lineTo(obs.x + obstacleWidth, 0);
+                ctx.fill();
+
+                // Snow cap (melts when on fire)
+                if (!obs.onFire) {
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.moveTo(obs.x + obstacleWidth / 2 - 15, obs.topHeight - 20);
+                    ctx.lineTo(obs.x + obstacleWidth / 2, obs.topHeight);
+                    ctx.lineTo(obs.x + obstacleWidth / 2 + 15, obs.topHeight - 20);
+                    ctx.fill();
+                }
+            }
+
+            // Bottom mountain
+            if (obs.bottomY < canvas.height) {
+                ctx.fillStyle = obs.onFire ? '#8B0000' : '#8B4513';
+                ctx.beginPath();
+                ctx.moveTo(obs.x, canvas.height);
+                ctx.lineTo(obs.x + obstacleWidth / 2, obs.bottomY);
+                ctx.lineTo(obs.x + obstacleWidth, canvas.height);
+                ctx.fill();
+
+                // Snow cap (melts when on fire)
+                if (!obs.onFire) {
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.moveTo(obs.x + obstacleWidth / 2 - 15, obs.bottomY + 20);
+                    ctx.lineTo(obs.x + obstacleWidth / 2, obs.bottomY);
+                    ctx.lineTo(obs.x + obstacleWidth / 2 + 15, obs.bottomY + 20);
+                    ctx.fill();
+                }
+            }
+        }
+
+        // Create fire particles
+        function createFireParticles(x, topHeight, bottomY) {
+            // Top mountain fires
+            for (let i = 0; i < 5; i++) {
+                fireParticles.push({
+                    x: x + Math.random() * obstacleWidth,
+                    y: topHeight - 10,
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: -Math.random() * 3 - 1,
+                    size: Math.random() * 6 + 3,
+                    life: 1,
+                    color: Math.random() > 0.5 ? '#FF4500' : '#FFD700'
+                });
+            }
+            // Bottom mountain fires
+            for (let i = 0; i < 5; i++) {
+                fireParticles.push({
+                    x: x + Math.random() * obstacleWidth,
+                    y: bottomY + 10,
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: Math.random() * 3 + 1,
+                    size: Math.random() * 6 + 3,
+                    life: 1,
+                    color: Math.random() > 0.5 ? '#FF4500' : '#FFD700'
+                });
+            }
+        }
+
+        // Draw fire particles
+        function drawFireParticles() {
+            fireParticles.forEach(particle => {
+                ctx.fillStyle = particle.color;
+                ctx.globalAlpha = particle.life;
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            });
+        }
+
+        // Draw lotus
+        function drawLotus(lotus) {
+            ctx.save();
+            ctx.translate(lotus.x, lotus.y);
+            
+            // Petals
+            for (let i = 0; i < 8; i++) {
+                ctx.save();
+                ctx.rotate((Math.PI * 2 / 8) * i);
+                ctx.fillStyle = '#FF69B4';
+                ctx.beginPath();
+                ctx.ellipse(0, -8, 6, 12, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+            
+            // Center
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.arc(0, 0, 8, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.restore();
+        }
+
+        // Create obstacle
+        function createObstacle() {
+            const minHeight = 100;
+            const maxHeight = canvas.height - gap - minHeight;
+            const topHeight = minHeight + Math.random() * (maxHeight - minHeight);
+            
+            obstacles.push({
+                x: canvas.width,
+                topHeight: topHeight,
+                bottomY: topHeight + gap,
+                scored: false
+            });
+
+            // 50% chance to spawn a lotus
+            if (Math.random() > 0.5) {
+                lotuses.push({
+                    x: canvas.width + obstacleWidth / 2,
+                    y: topHeight + gap / 2,
+                    collected: false
+                });
+            }
+        }
+
+        // Update game
+        function update() {
+            if (!gameStarted || gameOver) return;
+
+            frameCount++;
+
+            // Adjust difficulty
+            adjustDifficulty();
+
+            // Update Hanuman
+            hanuman.velocity += hanuman.gravity;
+            hanuman.y += hanuman.velocity;
+            hanuman.rotation = Math.min(Math.max(hanuman.velocity * 0.05, -0.5), 0.5);
+
+            // Check boundaries
+            if (hanuman.y + hanuman.height > canvas.height || hanuman.y < 0) {
+                endGame();
+            }
+
+            // Update clouds
+            clouds.forEach(cloud => {
+                cloud.x -= cloud.speed;
+                if (cloud.x + cloud.width < 0) {
+                    cloud.x = canvas.width;
+                    cloud.y = Math.random() * 200;
+                }
+            });
+
+            // Create obstacles (using dynamic spawn rate)
+            if (frameCount % spawnRate === 0) {
+                createObstacle();
+            }
+
+            // Update obstacles
+            obstacles.forEach((obs, index) => {
+                obs.x -= obstacleSpeed;
+
+                // Score point and set on fire
+                if (!obs.scored && obs.x + obstacleWidth < hanuman.x) {
+                    score++;
+                    document.getElementById('score').textContent = score;
+                    obs.scored = true;
+                    obs.onFire = true;
+                    createFireParticles(obs.x, obs.topHeight, obs.bottomY);
+                }
+
+                // Check collision
+                if (hanuman.x + hanuman.width > obs.x && 
+                    hanuman.x < obs.x + obstacleWidth) {
+                    if (hanuman.y < obs.topHeight || 
+                        hanuman.y + hanuman.height > obs.bottomY) {
+                        endGame();
+                    }
+                }
+
+                // Remove off-screen obstacles
+                if (obs.x + obstacleWidth < 0) {
+                    obstacles.splice(index, 1);
+                }
+            });
+
+            // Update fire particles
+            fireParticles.forEach((particle, index) => {
+                particle.x += particle.vx;
+                particle.y += particle.vy;
+                particle.life -= 0.02;
+                particle.size *= 0.96;
+
+                if (particle.life <= 0) {
+                    fireParticles.splice(index, 1);
+                }
+            });
+
+            // Update lotuses
+            lotuses.forEach((lotus, index) => {
+                lotus.x -= obstacleSpeed;
+
+                // Check collection
+                if (!lotus.collected &&
+                    Math.abs(hanuman.x + hanuman.width / 2 - lotus.x) < 25 &&
+                    Math.abs(hanuman.y + hanuman.height / 2 - lotus.y) < 25) {
+                    lotus.collected = true;
+                    score += 5;
+                    document.getElementById('score').textContent = score;
+                }
+
+                // Remove off-screen lotuses
+                if (lotus.x < 0) {
+                    lotuses.splice(index, 1);
+                }
+            });
+        }
+
+        // Draw game
+        function draw() {
+            // Sky gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#87CEEB');
+            gradient.addColorStop(1, '#FFA07A');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Clouds
+            clouds.forEach(cloud => drawCloud(cloud));
+
+            // Obstacles
+            obstacles.forEach(obs => drawObstacle(obs));
+
+            // Fire particles
+            drawFireParticles();
+
+            // Lotuses
+            lotuses.forEach(lotus => {
+                if (!lotus.collected) drawLotus(lotus);
+            });
+
+            // Hanuman
+            drawHanuman();
+        }
+
+        // Game loop
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Start game
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            gameStarted = true;
+            gameOver = false;
+            score = 0;
+            obstacles = [];
+            lotuses = [];
+            fireParticles = [];
+            frameCount = 0;
+            hanuman.y = canvas.height / 2;
+            hanuman.velocity = 0;
+            document.getElementById('score').textContent = '0';
+            
+            // Reset difficulty to easy
+            gap = 200;
+            obstacleSpeed = 2.5;
+            spawnRate = 110;
+        }
+
+        // End game
+        function endGame() {
+            gameOver = true;
+            gameStarted = false;
+            
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('hanumanHighScore', highScore);
+                document.getElementById('highScore').textContent = `Best: ${highScore}`;
+            }
+            
+            document.getElementById('finalScore').textContent = `Score: ${score}`;
+            document.getElementById('gameOverScreen').style.display = 'flex';
+        }
+
+        // Restart game
+        function restartGame() {
+            document.getElementById('gameOverScreen').style.display = 'none';
+            startGame();
+        }
+
+        // Jump
+        function jump() {
+            if (gameStarted && !gameOver) {
+                hanuman.velocity = hanuman.jump;
+            }
+        }
+
+        // Event listeners
+        canvas.addEventListener('click', jump);
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                jump();
+            }
+        });
+
+        // Touch support
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            jump();
+        });
+
+        // Start game loop
+        gameLoop();
+    </script>
+</body>
+</html>

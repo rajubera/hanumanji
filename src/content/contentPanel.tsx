@@ -6,6 +6,7 @@ import { SceneEvents, SceneManager } from "../experience";
 export const ContentPanel = () => {
     const [isIntroStarted, setIsIntroStarted] = useState(false);
     const [isIntroComplete, setIsIntroComplete] = useState(false);
+
     useEffect(() => {
         const fn = () => {
             setIsIntroComplete(true)
@@ -15,9 +16,14 @@ export const ContentPanel = () => {
             SceneManager.emitter.removeEventListener(SceneEvents.INTRO_COMPLETE, fn)
         }
     }, [])
+
     return <div id="overlay">
         {isIntroStarted && isIntroComplete ? <ContentLayout></ContentLayout> : <></>}
-        {!isIntroStarted && !isIntroComplete ? <IntroCard setIsIntroStarted={setIsIntroStarted} ></IntroCard> : <></>}
-
+        {!isIntroStarted && !isIntroComplete ? (
+            <IntroCard 
+                setIsIntroStarted={setIsIntroStarted} 
+                onStartGame={() => { window.location.hash = 'game'; }}
+            />
+        ) : <></>}
     </div>
 }
