@@ -30,8 +30,14 @@ const FlipBook = ({ setIsBookOpen }: FlipBookProps) => {
 
             });
 
-            pageFlip.loadFromHTML(document.querySelectorAll(".page"));
+            pageFlip.loadFromHTML(bookRef.current.querySelectorAll(".page"));
             pageFlipRef.current = pageFlip;
+
+            // Debug state
+            console.log("FlipBook initialized:", pageFlip);
+            pageFlip.on('flip', (e) => {
+                console.log("Current page:", e.data);
+            });
             window.addEventListener("resize", () => {
                 // pageFlip.upda({
                 //     width: window.innerWidth / 2,

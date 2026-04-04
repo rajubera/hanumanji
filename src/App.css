@@ -170,7 +170,7 @@ button:focus-visible {
 
 /* interactive elements */
 .overlay-ui button,
-.overlay-ui .flip-book {
+.overlay-ui .flip-book-container {
   pointer-events: auto;
   /* re-enable clicks only on real UI */
 }
