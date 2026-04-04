@@ -703,7 +703,7 @@ button:focus-visible {
 }
 
 .game-over-hanuman-icon {
-  max-height: 20vh;
+  max-height: 16vh;
   width: auto;
   margin-bottom: 5px;
   filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.5));

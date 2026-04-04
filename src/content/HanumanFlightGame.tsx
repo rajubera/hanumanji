@@ -803,7 +803,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     <div className="game-screen start-screen" style={{ pointerEvents: 'auto' }}>
                         <div className="start-screen-content-stack">
                             <div className="start-screen-hero-container">
-                                <img src={hanumanImg} alt="Hanumanji" className="start-screen-hero" style={{ height: '20vh' }} />
+                                <img src={hanumanImg} alt="Hanumanji" className="start-screen-hero" style={{ height: '16vh' }} />
                                 <div className="hero-glow"></div>
                             </div>
                             <h1 className="main-title">
@@ -857,7 +857,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                             </div>
 
                             <p className="publisher-attribution-end">
-                                <a href="https://aponiar.com" target="_blank" rel="noopener noreferrer">Aponiar</a>
+                                Published by <a href="https://aponiar.com" target="_blank" rel="noopener noreferrer">Aponiar</a>
                             </p>
 
                             <div className="end-screen-actions">
