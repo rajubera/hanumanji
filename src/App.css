@@ -1153,6 +1153,35 @@ button:focus-visible {
   font-size: 0.9rem;
 }
 
+.publisher-attribution {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 15px;
+  font-weight: 600;
+}
+
+.tagline-text {
+  font-size: 0.8rem;
+  color: #4ADE80;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  font-family: 'Poppins', sans-serif;
+  text-transform: uppercase;
+}
+
+.publisher-attribution-end {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-top: 15px;
+  font-weight: 800;
+}
+
 .game-exit-link {
   background: none !important;
   border: none !important;

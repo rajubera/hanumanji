@@ -184,8 +184,8 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     try {
                         await navigator.share({
                             files: [file],
-                            title: "Hanuman's Divine Flight Blessing",
-                            text: `I just completed a divine journey with Hanuman ji! 🚩\nJourney Score: ${scoreRef.current} | ॐ Mantras: ${mantraCount} | 🌸 Blossoms: ${flowerCount}\nExperience the aura: ${window.location.origin}`
+                            title: "Divine Flight - Hanuman's Sacred Journey",
+                            text: `I just completed a sacred journey in DIVINE FLIGHT! 🚩\nJourney Score: ${scoreRef.current} | ॐ Mantras: ${mantraCount} | 🌸 Blossoms: ${flowerCount}\nPublished by Aponiar | Experience the aura: ${window.location.origin}`
                         });
                     } catch (err) {
                         if ((err as Error).name !== 'AbortError') {
@@ -809,7 +809,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                             <h1 className="main-title">
                                 <span className="scared-symbol">🕉️</span> DIVINE FLIGHT <span className="scared-symbol">🕉️</span>
                             </h1>
-                            <p className="subtitle">THE INFINITE LEAP OF BAL HANUMAN</p>
+                             <p className="subtitle">Hanuman's Sacred Journey</p>
                             <div className="divider"></div>
                             <div className="story-box">
                                 <p>With a roar that shakes the celestial peaks, young Hanuman leaps into the infinite blue—mistaking the blazing sun for a golden fruit! Dodge the ancient monoliths and fulfill the destiny of the Vanara prince.</p>
@@ -822,6 +822,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                             <button className="back-link-btn" onClick={onClose} title="Back to Aura" style={{ marginTop: '10px' }}>
                                 <span className="back-icon">←</span> BACK TO AURA
                             </button>
+                            <p className="publisher-attribution">Published by Aponiar</p>
                         </div>
                     </div>
                 )}
@@ -839,7 +840,8 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
                         <div className="end-screen-content">
                             <img src={hanumanImg} alt="Hanumanji" className="game-over-hanuman-icon" />
-                            <h1 className="jayanti-greeting">DIVINE FLIGHT</h1>
+                             <h1 className="jayanti-greeting">DIVINE FLIGHT</h1>
+                             <p className="tagline-text">Hanuman's Sacred Journey</p>
 
                             <div className="score-focus">
                                 <span className="label">Journey Score</span>
@@ -849,22 +851,24 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                             <div className="stats-text-only">
                                 <span>ॐ Mantras: {mantraCount}</span>
                                 <span>🌸 Flowers: {flowerCount}</span>
-                                <span>🏆 Best: {highScore}</span>
-                            </div>
+                                 <span>🏆 Best: {highScore}</span>
+                             </div>
+
+                             <p className="publisher-attribution-end">Aponiar</p>
 
                             <div className="end-screen-actions">
                                 <div className="social-share-group">
-                                    <WhatsappShareButton
+                                     <WhatsappShareButton
                                         url={window.location.href}
-                                        title={`I just completed a divine journey with Hanuman ji! 🚩\nScore: ${score} | ॐ Mantras: ${mantraCount} | 🌸 Blossoms: ${flowerCount}\n\nExperience the flight here: `}
+                                        title={`I just completed a sacred journey in DIVINE FLIGHT - Hanuman's Sacred Journey! 🚩\nScore: ${score} | ॐ Mantras: ${mantraCount} | 🌸 Blossoms: ${flowerCount}\n\nPublished by Aponiar. Experience the flight here: `}
                                         separator=" "
                                     >
                                         <WhatsappIcon size={40} round />
                                     </WhatsappShareButton>
 
-                                    <TwitterShareButton
+                                     <TwitterShareButton
                                         url={window.location.href}
-                                        title={`I just completed a divine journey with Hanuman ji! 🚩\nScore: ${score} | ॐ Mantras: ${mantraCount} | 🌸 Blossoms: ${flowerCount}\n\nExperience the flight #HanumanFlight #Divine`}
+                                        title={`I just completed a sacred journey in DIVINE FLIGHT - Hanuman's Sacred Journey! 🚩\nScore: ${score} | ॐ Mantras: ${mantraCount} | 🌸 Blossoms: ${flowerCount}\n\nExperience the flight #DivineFlight #Aponiar`}
                                     >
                                         <TwitterIcon size={40} round />
                                     </TwitterShareButton>
@@ -878,17 +882,17 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
                                     <EmailShareButton
                                         url={window.location.href}
-                                        subject="Hanuman's Divine Flight - My High Score!"
-                                        body={`I just completed a divine journey with Hanuman ji! 🚩\n\nMy Stats:\n- Journey Score: ${score}\n- ॐ Mantras: ${mantraCount}\n- 🌸 Blossoms: ${flowerCount}\n\nExperience the flight here: `}
+                                        subject="DIVINE FLIGHT - My Sacred Journey Score!"
+                                        body={`I just completed a sacred journey in DIVINE FLIGHT - Hanuman's Sacred Journey! 🚩\n\nMy Stats:\n- Journey Score: ${score}\n- ॐ Mantras: ${mantraCount}\n- 🌸 Blossoms: ${flowerCount}\n\nPublished by Aponiar. Experience the flight here: `}
                                     >
                                         <EmailIcon size={40} round />
                                     </EmailShareButton>
 
                                     <LinkedinShareButton
                                         url={window.location.href}
-                                        title="Hanuman's Divine Flight - My High Score!"
-                                        summary={`I just completed a divine journey with Hanuman ji! 🚩\nScore: ${score} | ॐ Mantras: ${mantraCount} | 🌸 Blossoms: ${flowerCount}`}
-                                        source="Hanuman's Divine Flight"
+                                        title="DIVINE FLIGHT - Hanuman's Sacred Journey"
+                                        summary={`I just completed a sacred journey in DIVINE FLIGHT! 🚩\nScore: ${score} | ॐ Mantras: ${mantraCount} | 🌸 Blossoms: ${flowerCount}\nPublished by Aponiar.`}
+                                        source="DIVINE FLIGHT"
                                     >
                                         <LinkedinIcon size={40} round />
                                     </LinkedinShareButton>
