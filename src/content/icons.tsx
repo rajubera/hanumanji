@@ -3,7 +3,7 @@ export const BookOpen = () => {
     return <>
 
         <div className="book-wrapper" data-tooltip-id="globalTooltip"
-            data-tooltip-content="Explore about us">
+            data-tooltip-content="Hanuman Stories">
             {/* <span className="aura"></span> */}
             <span className="aura"></span>
             <span className="aura"></span>

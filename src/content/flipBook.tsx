@@ -54,89 +54,116 @@ const FlipBook = ({ setIsBookOpen }: FlipBookProps) => {
                     <h1 className="text-2xl font-serif text-red-800 text-center">
                         ॥ ॐ श्री हनुमते नमः ॥
                     </h1>
-                    <p className="mt-6 text-lg leading-loose text-gray-900">
+                    <p className="mt-6 text-lg leading-loose text-gray-900 italic text-center">
                         🌸 “A Home for Devotion, A Space for Peace” 🌸
                     </p>
-                    <p className="mt-6 text-lg leading-loose text-gray-900">
-                        🙏 Join us in building a sacred Mandir for our community
-                    </p>
-                    <p className="mt-6 text-lg leading-loose text-gray-900">
+                    <div className="mt-8 text-gray-900 leading-relaxed text-sm">
+                        <p className="mb-4">
+                            Welcome to a sanctuary where ancient wisdom meets modern experience. At <strong>Aponiar</strong>, we believe that technology can be a bridge to the divine.
+                        </p>
+                        <p className="mb-4">
+                            Our mission is to craft immersive digital journeys—like <strong>DIVINE FLIGHT</strong>—that inspire, uplift, and bring the stories of our heritage to life for a new generation.
+                        </p>
+                    </div>
+                    <div className="mt-8 text-center">
                         <button
                             style={{
-                                padding: "12px 28px",
+                                padding: "10px 24px",
                                 background: "var(--hm-safron-linear-bg)",
                                 color: "white",
-                                fontWeight: "600",
-                                borderRadius: "8px",
-                                boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                                fontWeight: "700",
+                                borderRadius: "30px",
+                                boxShadow: "0 4px 12px rgba(251, 191, 36, 0.3)",
                                 cursor: "pointer",
-                                fontSize: "18px",
+                                fontSize: "14px",
                                 border: "none",
-                                transition: "all 0.3s ease"
+                                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                                textTransform: "uppercase",
+                                letterSpacing: "1px"
                             }}
                             className="hm-btn"
-                            onMouseOver={(e) => {
-                                e.currentTarget.style.transform = "scale(1.05)";
-                                e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.3)";
-                            }}
-                            onMouseOut={(e) => {
-                                e.currentTarget.style.transform = "scale(1)";
-                                e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
-                            }}
-                            onClick={() => window.open("https://your-donation-link.com", "_blank")}
+                            onClick={() => window.open("https://aponiar.com", "_blank")}
                         >
-                            🙏 Donate Now
+                            🚀 Visit Aponiar
                         </button>
-                    </p>
+                    </div>
                 </div>
 
+                {/* Page 2: The Infinite Leap */}
                 <div className="page bg-oldpaper p-8">
-                    <h2 className="text-2xl font-serif text-red-700">Welcome</h2>
-                    <p className="mt-4 text-gray-900 leading-loose">
-                        Dear Devotees,
-                        <p>With the blessings of the Almighty and the support of well-wishers like you, we are beginning a divine journey — to build a Mandir that will stand as a center of faith, peace, and community togetherness.
+                    <h2 className="text-xl font-serif text-red-700 mb-4 border-b border-red-200 pb-2">I. The Infinite Leap</h2>
+                    <div className="text-gray-900 leading-relaxed text-sm">
+                        <p className="mb-3">
+                            Long ago, as the sun rose over the groves of Kishkindha, the young Hanuman looked up and saw a brilliant, glowing fruit in the sky.
                         </p>
-                    </p>
+                        <p className="mb-3">
+                            With a roar that startled the gods, he took a mighty leap—not of mere physical strength, but of pure, innocent devotion. 
+                        </p>
+                        <p>
+                            Mistaking the blazing Sun God for a divine fruit, he flew through the celestial spheres, demonstrating the limitless potential of a soul guided by courage.
+                        </p>
+                    </div>
                 </div>
 
-                <div className="page bg-oldpaper p-8">
-                    <h2 className="text-2xl font-serif text-red-700">Vision</h2>
-                    <p className="mt-4 text-gray-900 leading-loose">
-                        The Mandir will be:
-                        <p>✨ A place of worship and spiritual growth
+                {/* Page 3: The Mountain Lifter */}
+                <div className="page bg-oldpaper p-8 text-sm">
+                    <h2 className="text-xl font-serif text-red-700 mb-4 border-b border-red-200 pb-2">II. The Mountain Lifter</h2>
+                    <div className="text-gray-900 leading-relaxed">
+                        <p className="mb-3">
+                            When Lakshmana lay wounded on the battlefield, only the <strong>Sanjeevani</strong> herb from the Dronagiri mountain could save him.
                         </p>
-                        <p>✨ A space for bhajans, satsangs, and cultural activities
-                        </p><p>✨ A center of community support, values, and teachings for generations to come
+                        <p className="mb-3">
+                            Hanuman flew across the horizon to find it, but the mountain was covered in identical-looking plants. Faced with doubt, Hanuman chose the path of total resolution.
                         </p>
-                    </p>
+                        <p>
+                            He lifted the entire mountain on his palm and brought it to Sri Rama, teaching us that when we cannot find the way, we must carry the solution with us.
+                        </p>
+                    </div>
                 </div>
-                <div className="page bg-oldpaper p-8">
-                    <h2 className="text-2xl font-serif text-red-700">Why This Mandir Matters</h2>
-                    <p className="mt-4 text-gray-900 leading-loose">
-                        <p>🪔 In today’s busy life, we all seek a place for peace and connection.
-                        </p><p>🪔 The Mandir will not only be a spiritual center but also a cultural and moral anchor for our children and future generations.
+
+                {/* Page 4: Divine Devotion */}
+                <div className="page bg-oldpaper p-8 text-sm">
+                    <h2 className="text-xl font-serif text-red-700 mb-4 border-b border-red-200 pb-2">III. The Soul of Devotion</h2>
+                    <div className="text-gray-900 leading-relaxed">
+                        <p className="mb-3">
+                            When asked where Sri Rama resided, Hanuman did not point to a temple or a book. Instead, he tore open his chest with his claws.
                         </p>
-                    </p>
-                </div>
-                <div className="page bg-oldpaper p-8">
-                    <h2 className="text-2xl font-serif text-red-700">How You Can Help</h2>
-                    <p className="mt-4 text-gray-900 leading-loose">
-                        We invite your generous support 🙏
-                        <p>💰 Donations (big or small, every bit counts)
-                        </p><p>📦 Contributions in kind (materials, services, volunteering)
-                        </p><p>💞 Spreading the word to others who may wish to contribute
+                        <p className="mb-3">
+                            There, etched into his very heart, were the images of Rama and Sita. 
                         </p>
-                    </p>
+                        <p>
+                            This act revealed the true nature of <strong>Bhakti</strong>: that the divine is not found in the external world, but is the very fabric of our being when we surrender in love.
+                        </p>
+                    </div>
                 </div>
-                <div className="page bg-oldpaper p-8">
-                    <h2 className="text-2xl font-serif text-red-700">Gratitude</h2>
-                    <p className="mt-4 text-gray-900 leading-loose">
-                       <p> Every brick laid, every prayer offered, and every rupee donated will carry your blessings and devotion.
-</p><p>
-                        Together, let us create a sacred space where generations can find peace, devotion, and inspiration.
-</p><p>
-                        🙏 May the Divine bless you and your family with happiness, prosperity, and peace.
-                   </p>
+
+                {/* Page 5: The Eternal Protector */}
+                <div className="page bg-oldpaper p-8 text-sm">
+                    <h2 className="text-xl font-serif text-red-700 mb-4 border-b border-red-200 pb-2">IV. The Eternal Protector</h2>
+                    <div className="text-gray-900 leading-relaxed">
+                        <p className="mb-3">
+                            Blessed as a <strong>Chiranjeevi</strong> (Immortal), Hanuman resides among us even today. He is the guardian of the threshold, the dissipater of fear.
+                        </p>
+                        <p className="mb-3">
+                            Wherever the name of Rama is chanted, Hanuman is present—the first to arrive and the last to leave.
+                        </p>
+                        <p className="italic font-bold text-red-800 text-center mt-4">
+                            "Where there is devotion, there is Hanuman. Where there is Hanuman, there is victory."
+                        </p>
+                    </div>
+                </div>
+
+                {/* Page 6: Gratitude */}
+                <div className="page bg-oldpaper p-8 text-center flex flex-col justify-center">
+                    <h2 className="text-2xl font-serif text-red-700 mb-6 italic">Gratitude</h2>
+                    <p className="text-gray-900 leading-loose text-sm italic">
+                        "Jai Shri Ram"
+                    </p>
+                    <p className="mt-6 text-gray-900 text-xs">
+                        Aponiar © 2024
+                    </p>
+                    <p className="mt-8 text-gray-400 text-xs tracking-widest uppercase">
+                        Exploring the Infinite
                     </p>
                 </div>
             </div>
