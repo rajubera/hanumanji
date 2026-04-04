@@ -5,7 +5,7 @@
   text-align: center; */
   --hm-safron-color: #ff9933;
   /* --hm-safron-linear-bg: linear-gradient(135deg, #ff9933 0%, #ff6600 50%, #ffcc33 100%); */
-  --hm-safron-linear-bg:  linear-gradient(90deg, #e65100, #ffb300, #e65100);
+  --hm-safron-linear-bg: linear-gradient(90deg, #e65100, #ffb300, #e65100);
   --hm-safron-btn-box-shadow: 0 4px 12px rgba(255, 102, 0, 0.5);
 }
 
@@ -339,7 +339,7 @@ button:focus-visible {
   display: flex;
   justify-content: center;
   position: absolute;
-  top: calc(-100% + 20px);
+  top: calc(-100% + 175px);
   width: calc(100% - 48px);
 }
 
@@ -394,6 +394,7 @@ button:focus-visible {
   box-shadow: var(--hm-safron-btn-box-shadow);
   border-radius: 999px;
 }
+
 .hm-btn:hover {
   transform: scale(1.05);
 }
@@ -402,12 +403,12 @@ button:focus-visible {
 /* mobile fix */
 @media only screen and (max-width: 600px) {
   .floating-menu.right {
-  right: 20px;
-}
+    right: 20px;
+  }
 
-.floating-menu.left {
-  left: 20px;
-}
+  .floating-menu.left {
+    left: 20px;
+  }
 }
 
 /* Game Entry Block Styles */
@@ -505,4 +506,566 @@ button:focus-visible {
   border-radius: 6px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+/* Hanuman's Divine Flight - Premium Game UI */
+.game-ui {
+  position: absolute;
+  top: 25px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.collection-counters {
+  display: flex;
+  gap: 15px;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(12px);
+  padding: 10px 25px;
+  border-radius: 40px;
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.counter-item {
+  color: #FDE68A;
+  font-weight: 700;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Cinzel Decorative', serif;
+}
+
+.score-display,
+.high-score-display {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 10px 20px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #FFF;
+  font-weight: 800;
+  font-size: 1.4rem;
+  font-family: 'Cinzel Decorative', serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.instruction-overlay {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 200;
+  animation: divineFadeInOut 4s forwards ease-in-out;
+}
+
+.instruction-badge {
+  background: rgba(30, 27, 75, 0.7);
+  backdrop-filter: blur(16px);
+  padding: 30px 50px;
+  border-radius: 24px;
+  border: 2px solid rgba(251, 191, 36, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(251, 191, 36, 0.1);
+}
+
+.instruction-icon {
+  font-size: 3rem;
+  animation: floatSway 2s infinite ease-in-out;
+}
+
+.instruction-badge p {
+  color: #FFFBEB;
+  font-weight: 700;
+  font-size: 1.6rem;
+  font-family: 'Cinzel Decorative', serif;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes divineFadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -40%) scale(0.9);
+  }
+
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  85% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(0.95);
+  }
+}
+
+@keyframes floatSway {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(-5deg);
+  }
+
+  50% {
+    transform: translateY(-15px) rotate(5deg);
+  }
+}
+
+.final-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 25px 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.final-stats span {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #FDE68A;
+  font-family: 'Cinzel Decorative', serif;
+}
+
+.close-game-btn {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.close-game-btn:hover {
+  background: rgba(239, 68, 68, 0.4);
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* Cinematic Game Over - Final Divine Redesign */
+.jayanti-end-screen {
+  background: #f97316 !important;
+  background-image:
+    linear-gradient(to bottom, #4338ca 0%, #7c2d12 30%, #ea580c 60%, #fb923c 100%) !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  padding: 40px 0 !important;
+  /* Vertical space for content, 0 horizontal for mandirs */
+}
+
+.jayanti-clouds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.4;
+}
+
+.jayanti-clouds::before,
+.jayanti-clouds::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 100%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+  filter: blur(50px);
+  animation: cloudDrift 80s infinite linear;
+}
+
+.jayanti-rays {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150vmax;
+  height: 150vmax;
+  background: conic-gradient(from 0deg,
+      transparent 0deg,
+      rgba(253, 224, 71, 0.08) 15deg,
+      transparent 30deg,
+      rgba(253, 224, 71, 0.05) 45deg,
+      transparent 60deg);
+  z-index: 1;
+  animation: rayRotate 60s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes rayRotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.jayanti-sparkles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  background-image:
+    radial-gradient(circle at 10% 20%, #fff 1px, transparent 1px),
+    radial-gradient(circle at 90% 10%, #fff 1.2px, transparent 1.2px),
+    radial-gradient(circle at 50% 40%, #fff 0.8px, transparent 0.8px),
+    radial-gradient(circle at 20% 60%, #fff 1px, transparent 1px),
+    radial-gradient(circle at 80% 80%, #fff 1.1px, transparent 1.1px);
+  background-size: 250px 250px;
+  animation: celestialTwinkle 6s infinite alternate ease-in-out;
+  opacity: 0.3;
+}
+
+.jayanti-birds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.jayanti-birds::before,
+.jayanti-birds::after {
+  content: "";
+  position: absolute;
+  width: 10px; /* Smaller size */
+  height: 5px;
+  background: #000;
+  /* More realistic 'M' shape bird silhouette */
+  clip-path: polygon(0% 50%, 20% 20%, 40% 50%, 60% 50%, 80% 20%, 100% 50%, 50% 100%);
+  animation: birdFlight 25s infinite linear, birdFlap 0.5s infinite ease-in-out;
+  opacity: 0.4; /* More subtle */
+}
+
+.jayanti-birds::before {
+  top: 30%;
+  animation-duration: 35s, 0.5s;
+  animation-delay: 0s, 0s;
+}
+
+.jayanti-birds::after {
+  top: 45%;
+  animation-duration: 28s, 0.4s;
+  animation-delay: -10s, -0.2s;
+}
+
+@keyframes birdFlight {
+  from {
+    left: -50px;
+  }
+
+  to {
+    left: 110%;
+  }
+}
+
+@keyframes birdFlap {
+
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  50% {
+    transform: scaleY(0.3);
+  }
+}
+
+@keyframes celestialTwinkle {
+
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes cloudDrift {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.jayanti-sun {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(550px, 80vw);
+  height: min(550px, 80vw);
+  background: #fde047;
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: 0 0 120px #fbbf24, 0 0 250px rgba(251, 191, 36, 0.4);
+}
+
+/* Guardian Mandirs - Flanking the content */
+.guardian-mandir {
+  position: absolute;
+  bottom: 0;
+  width: 300px;
+  height: 400px;
+  z-index: 4;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 -10px 30px rgba(0, 0, 0, 0.6));
+}
+
+.guardian-mandir.left {
+  left: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0,400 L0,300 L50,300 L80,250 L120,250 L150,50 L180,250 L220,250 L250,300 L300,300 L300,400 Z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+.guardian-mandir.right {
+  right: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0,400 L0,300 L50,300 L80,250 L120,250 L150,20 L180,250 L220,250 L250,300 L300,300 L300,400 Z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+/* Precise Flag Anchoring to Side Mandir Peaks */
+.guardian-mandir::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 12px;
+  background: #ff5500;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  z-index: 5;
+  animation: dhwajaWave 2s infinite ease-in-out;
+}
+
+.guardian-mandir.left::after {
+  top: 45px;
+  left: 147px;
+}
+
+.guardian-mandir.right::after {
+  top: 15px;
+  left: 147px;
+}
+
+@keyframes dhwajaWave {
+
+  0%,
+  100% {
+    transform: skewY(0) scaleX(1);
+  }
+
+  50% {
+    transform: skewY(12deg) scaleX(0.85);
+  }
+}
+
+.jayanti-water {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 140px;
+  background: linear-gradient(to bottom, #1e1b4b, #000);
+  z-index: 3;
+}
+
+/* High-Contrast Glassmorphic UI - Indigo Tinted for White Text Pop */
+.end-screen-content {
+  top: -20px;
+  position: relative;
+  z-index: 50;
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh;
+  /* Reduced to ensure centering */
+  padding: 35px 25px;
+  text-align: center;
+  flex-shrink: 0;
+  /* Prevent squashing */
+  background: rgba(15, 23, 42, 0.85);
+  /* Deep Indigo/Black Mix for Contrast */
+  backdrop-filter: blur(28px) saturate(180%);
+  border-radius: 36px;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  box-shadow:
+    0 40px 120px rgba(0, 0, 0, 0.9),
+    0 0 60px rgba(234, 88, 12, 0.2);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.jayanti-greeting {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+.score-focus {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Centered Fix */
+  margin-bottom: 5px;
+}
+
+.score-focus .label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #fbbf24;
+  letter-spacing: 3px;
+  font-weight: 900;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.score-focus .value {
+  font-size: 5rem;
+  font-weight: 950;
+  color: #fff;
+  font-family: 'Cinzel Decorative', serif;
+  text-shadow: 0 5px 30px rgba(0, 0, 0, 0.9), 0 0 40px rgba(251, 191, 36, 0.3);
+  line-height: 1.1;
+}
+
+.stats-text-only {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 25px 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.end-screen-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.game-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  font-size: 1.1rem;
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.main-start-btn {
+  width: 100%;
+  max-width: 320px;
+  margin: 10px 0 25px 0 !important;
+}
+
+.game-exit-link {
+  background: none !important;
+  border: none !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  cursor: pointer;
+  padding: 10px 24px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.game-exit-link:hover {
+  color: #fbbf24 !important;
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+.social-share-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.social-share-group .react-share__ShareButton {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+}
+
+.social-share-group .react-share__ShareButton:hover {
+  transform: translateY(-5px) scale(1.1);
+  filter: drop-shadow(0 8px 25px rgba(251, 191, 36, 0.6));
+}
+
+.game-btn.primary {
+  background: rgba(251, 191, 36, 0.1) !important;
+  border: 1.5px solid #fbbf24 !important;
+  color: #fbbf24 !important;
+  font-weight: 800 !important;
+  flex: 1;
+}
+
+.game-btn.secondary {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.3) !important;
+  color: #fff !important;
+  font-weight: 800 !important;
+  flex: 1;
+}
+
+.game-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
 }
