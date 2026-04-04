@@ -13,6 +13,7 @@ import {
 } from 'react-share';
 import html2canvas from 'html2canvas';
 import './HanumanFlightGame.css';
+import hanumanImg from '../assets/images/hanumanji-flying.png';
 
 interface Hanuman {
     x: number; y: number; width: number; height: number;
@@ -80,13 +81,21 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const [score, setScore] = useState(0);
     const [mantraCount, setMantraCount] = useState(0);
     const [flowerCount, setFlowerCount] = useState(0);
-    const [showInstructions, setShowInstructions] = useState(false);
+    const [isFlying, setIsFlying] = useState(false);
     const [highScore, setHighScore] = useState(Number(localStorage.getItem('hanumanHighScore')) || 0);
     const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
 
     const scoreRef = useRef(0);
     const audioCtxRef = useRef<AudioContext | null>(null);
     const isSharingRef = useRef(false);
+    const hanumanImgRef = useRef<HTMLImageElement | null>(null);
+
+    // Load Hanuman Asset
+    useEffect(() => {
+        const img = new Image();
+        img.src = hanumanImg;
+        img.onload = () => { hanumanImgRef.current = img; };
+    }, []);
 
     const playBell = useCallback((freq: number) => {
         try {
@@ -141,7 +150,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         el.style.flexDirection = 'column';
                         el.style.alignItems = 'center';
                         el.style.justifyContent = 'center';
-                        
+
                         // Signature Cinematic Gradient Background
                         el.style.background = 'linear-gradient(180deg, #1E1B4B 0%, #4C1D95 35%, #BE123C 75%, #F59E0B 100%)';
 
@@ -156,7 +165,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         // Hide the share icons from the screenshot itself as it looks meta/cluttered
                         const icons = el.querySelector('.social-share-group');
                         if (icons) (icons as HTMLElement).style.display = 'none';
-                        
+
                         // Add a title prefix if missing
                         const title = el.querySelector('h2');
                         if (title) title.innerText = "🚩 DIVINE BLESSING 🚩";
@@ -202,8 +211,8 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
     const gameRef = useRef({
         hanuman: {
-            x: 80, y: 320, width: 50, height: 50,
-            velocity: 0, gravity: 0.5, jump: -9, rotation: 0
+            x: 80, y: 320, width: 110, height: 70,
+            velocity: 0, gravity: 0.45, jump: -8.0, rotation: 0
         } as Hanuman,
         obstacles: [] as Obstacle[],
         lotuses: [] as Lotus[],
@@ -218,12 +227,13 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         windLines: [] as WindLine[],
         foregroundLeaves: [] as ForegroundLeaf[],
         frameCount: 0,
-        gap: 220,
+        gap: 300,
         obstacleSpeed: 3,
         spawnRate: 110,
         obstacleWidth: 60,
         isGameOver: false,
         isGameStarted: false,
+        isFlying: false,
         sunPulse: 0
     });
 
@@ -356,6 +366,8 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
     const jump = useCallback(() => {
         if (gameRef.current.isGameStarted && !gameRef.current.isGameOver) {
+            setIsFlying(true);
+            gameRef.current.isFlying = true;
             gameRef.current.hanuman.velocity = gameRef.current.hanuman.jump;
         }
     }, []);
@@ -369,19 +381,18 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     }, [jump]);
 
     const startGame = () => {
-        setGameStarted(true); setGameOver(false); setScore(0);
-        setMantraCount(0); setFlowerCount(0); setShowInstructions(true);
+        setGameStarted(true); setGameOver(false); setScore(0); setIsFlying(false);
+        setMantraCount(0); setFlowerCount(0);
         scoreRef.current = 0;
         gameRef.current = {
             ...gameRef.current,
-            isGameStarted: true, isGameOver: false,
+            isGameStarted: true, isGameOver: false, isFlying: false,
             hanuman: {
                 ...gameRef.current.hanuman, y: dimensions.height / 2, velocity: 0, rotation: 0
             },
             obstacles: [], lotuses: [], fireParticles: [], frameCount: 0,
-            gap: 220, obstacleSpeed: 3, spawnRate: 110
+            gap: 300, obstacleSpeed: 3, spawnRate: 110
         };
-        setTimeout(() => setShowInstructions(false), 4000);
     };
 
     const endGame = useCallback(() => {
@@ -426,7 +437,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             const { width, height } = dimensions;
             state.frameCount++;
             state.sunPulse = Math.sin(state.frameCount * 0.04) * 6;
-            const globalSpeed = state.isGameStarted && !state.isGameOver ? state.obstacleSpeed : 1.5;
+            const globalSpeed = state.isGameStarted && !state.isGameOver && state.isFlying ? state.obstacleSpeed : 1.5;
 
             state.windLines.forEach((w) => {
                 w.x -= w.speed;
@@ -456,7 +467,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 }
             });
 
-            if (!state.isGameStarted || state.isGameOver) return;
+            if (!state.isGameStarted || state.isGameOver || !state.isFlying) return;
 
             state.stars.forEach((s) => { s.twinkle += 0.04; });
             state.bgMountains.forEach((m) => { m.x -= m.speed; if (m.x + m.width < 0) m.x = width; });
@@ -727,21 +738,26 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             });
 
             const h = state.hanuman;
-            ctx.save(); ctx.translate(h.x + h.width / 2, h.y + h.height / 2); ctx.rotate(h.rotation);
+            ctx.save();
+            ctx.translate(h.x + h.width / 2, h.y + h.height / 2);
+            ctx.rotate(h.rotation);
 
-            const s = h.width / 40;
-            ctx.strokeStyle = '#3F2C23'; ctx.lineWidth = 4 * s; ctx.beginPath(); ctx.moveTo(15 * s, 0); ctx.quadraticCurveTo(32 * s, -16 * s, 36 * s, -6 * s); ctx.stroke();
-            ctx.fillStyle = '#B45309'; ctx.beginPath(); ctx.ellipse(0, 5 * s, 14 * s, 18 * s, 0, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#F59E0B'; ctx.beginPath(); ctx.moveTo(-14 * s, 8 * s); ctx.lineTo(14 * s, 8 * s); ctx.lineTo(10 * s, 22 * s); ctx.lineTo(-10 * s, 22 * s); ctx.fill();
-            ctx.fillStyle = '#444'; ctx.fillRect(16 * s, 11 * s, 3.5 * s, 22 * s);
-            ctx.fillStyle = '#92400E'; ctx.beginPath(); ctx.arc(17.5 * s, 11 * s, 7 * s, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#78350F'; ctx.beginPath(); ctx.arc(0, -11 * s, 17 * s, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#D97706'; ctx.beginPath(); ctx.ellipse(0, -9 * s, 12.5 * s, 14 * s, 0, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#FFF'; ctx.beginPath(); ctx.arc(-6.5 * s, -11 * s, 5.5 * s, 0, Math.PI * 2); ctx.arc(6.5 * s, -11 * s, 5.5 * s, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(-6.5 * s, -11 * s, 3.5 * s, 0, Math.PI * 2); ctx.arc(6.5 * s, -11 * s, 3.5 * s, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#FBBF24'; ctx.beginPath(); ctx.moveTo(-12 * s, -22 * s); ctx.lineTo(0, -32 * s); ctx.lineTo(12 * s, -22 * s); ctx.fill();
-            ctx.fillStyle = '#B91C1C'; ctx.beginPath(); ctx.arc(0, -26 * s, 3 * s, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#991B1B'; ctx.beginPath(); ctx.ellipse(0, -15 * s, 2.5 * s, 5 * s, 0, 0, Math.PI * 2); ctx.fill();
+            if (hanumanImgRef.current) {
+                // Drawing the high-quality flying asset
+                ctx.drawImage(
+                    hanumanImgRef.current,
+                    -h.width / 2,
+                    -h.height / 2,
+                    h.width,
+                    h.height
+                );
+            } else {
+                // Fallback procedural drawing
+                const s = h.width / 40;
+                ctx.strokeStyle = '#3F2C23'; ctx.lineWidth = 4 * s; ctx.beginPath(); ctx.moveTo(15 * s, 0); ctx.quadraticCurveTo(32 * s, -16 * s, 36 * s, -6 * s); ctx.stroke();
+                ctx.fillStyle = '#B45309'; ctx.beginPath(); ctx.ellipse(0, 5 * s, 14 * s, 18 * s, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#F59E0B'; ctx.beginPath(); ctx.moveTo(-14 * s, 8 * s); ctx.lineTo(14 * s, 8 * s); ctx.lineTo(10 * s, 22 * s); ctx.lineTo(-10 * s, 22 * s); ctx.fill();
+            }
             ctx.restore();
         };
 
@@ -774,11 +790,11 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     }} title="Close Game">✕</button>
                 </div>
 
-                {showInstructions && gameStarted && !gameOver && (
-                    <div className="instruction-overlay">
-                        <div className="instruction-badge">
-                            <span className="instruction-icon">✨</span>
-                            <p>Tap or Press Space to Fly</p>
+                {gameStarted && !gameOver && !isFlying && (
+                    <div className="tap-to-start-overlay">
+                        <div className="tap-hint-box">
+                            <span className="tap-icon">👆</span>
+                            <p>TAP OR SPACE TO FLY</p>
                         </div>
                     </div>
                 )}
@@ -813,6 +829,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         <div className="jayanti-water"></div>
 
                         <div className="end-screen-content">
+                            <img src={hanumanImg} alt="Hanumanji" className="game-over-hanuman-icon" />
                             <h1 className="jayanti-greeting">JAI HANUMAN 🙏</h1>
 
                             <div className="score-focus">

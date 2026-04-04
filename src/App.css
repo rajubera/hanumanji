@@ -554,22 +554,23 @@ button:focus-visible {
   font-size: 1.4rem;
   font-family: 'Cinzel Decorative', serif;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  margin-top: 10px;
 }
 
-.instruction-overlay {
+.tap-to-start-overlay {
   position: absolute;
-  top: 45%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 200;
-  animation: divineFadeInOut 4s forwards ease-in-out;
+  animation: tapPulse 2s infinite ease-in-out;
 }
 
-.instruction-badge {
+.tap-hint-box {
   background: rgba(30, 27, 75, 0.7);
   backdrop-filter: blur(16px);
-  padding: 30px 50px;
+  padding: 25px 40px;
   border-radius: 24px;
   border: 2px solid rgba(251, 191, 36, 0.4);
   display: flex;
@@ -579,9 +580,24 @@ button:focus-visible {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(251, 191, 36, 0.1);
 }
 
-.instruction-icon {
+.tap-icon {
   font-size: 3rem;
-  animation: floatSway 2s infinite ease-in-out;
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.5));
+}
+
+.tap-hint-box p {
+  color: #FFFBEB;
+  font-weight: 800;
+  font-size: 1.4rem;
+  font-family: 'Cinzel Decorative', serif;
+  margin: 0;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes tapPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.05); }
 }
 
 .instruction-badge p {
@@ -591,6 +607,15 @@ button:focus-visible {
   font-family: 'Cinzel Decorative', serif;
   margin: 0;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.game-over-hanuman-icon {
+  max-height: 15vh;
+  width: auto;
+  margin-bottom: 5px;
+  filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.5));
+  animation: floatSway 3s infinite ease-in-out;
+  transform-origin: center;
 }
 
 @keyframes divineFadeInOut {
@@ -765,13 +790,15 @@ button:focus-visible {
 .jayanti-birds::after {
   content: "";
   position: absolute;
-  width: 10px; /* Smaller size */
+  width: 10px;
+  /* Smaller size */
   height: 5px;
   background: #000;
   /* More realistic 'M' shape bird silhouette */
   clip-path: polygon(0% 50%, 20% 20%, 40% 50%, 60% 50%, 80% 20%, 100% 50%, 50% 100%);
   animation: birdFlight 25s infinite linear, birdFlap 0.5s infinite ease-in-out;
-  opacity: 0.4; /* More subtle */
+  opacity: 0.4;
+  /* More subtle */
 }
 
 .jayanti-birds::before {
@@ -936,12 +963,12 @@ button:focus-visible {
 }
 
 .jayanti-greeting {
-  font-size: 1.8rem;
-  font-weight: 900;
+  font-size: 1.2rem;
+  font-weight: 950;
   color: #fff;
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
-  margin-bottom: 20px;
-  letter-spacing: 2px;
+  margin-bottom: 2px;
+  letter-spacing: 1px;
 }
 
 .score-focus {
@@ -953,35 +980,45 @@ button:focus-visible {
 }
 
 .score-focus .label {
-  font-size: 0.8rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
   color: #fbbf24;
-  letter-spacing: 3px;
-  font-weight: 900;
+  letter-spacing: 2px;
+  font-weight: 950;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .score-focus .value {
-  font-size: 5rem;
+  font-size: 2.8rem;
   font-weight: 950;
   color: #fff;
   font-family: 'Cinzel Decorative', serif;
   text-shadow: 0 5px 30px rgba(0, 0, 0, 0.9), 0 0 40px rgba(251, 191, 36, 0.3);
-  line-height: 1.1;
+  line-height: 1;
 }
 
 .stats-text-only {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  font-size: 1rem;
+  gap: 12px;
+  margin: 10px 0;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-badge {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(4px);
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.85rem;
   font-weight: 800;
   color: #fff;
-  margin: 25px 0;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .end-screen-actions {
@@ -1000,9 +1037,9 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  font-size: 1.1rem;
-  border-radius: 16px;
+  padding: 10px;
+  font-size: 0.95rem;
+  border-radius: 12px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -1034,9 +1071,9 @@ button:focus-visible {
 .social-share-group {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-bottom: 20px;
-  padding: 10px;
+  gap: 10px;
+  margin-bottom: 5px;
+  padding: 5px;
 }
 
 .social-share-group .react-share__ShareButton {
