@@ -155,9 +155,23 @@ const FlipBook = ({ setIsBookOpen }: FlipBookProps) => {
                     </div>
                 </div>
 
-                {/* Page 4: Divine Devotion */}
+                {/* Page 4: The Burning of Lanka */}
                 <div className="page bg-oldpaper p-8 text-sm">
-                    <h2 className="text-xl font-serif text-red-700 mb-4 border-b border-red-200 pb-2">III. The Soul of Devotion</h2>
+                    <h2 className="text-xl font-serif text-red-700 mb-4 border-b border-red-200 pb-2">III. The Burning of Lanka</h2>
+                    <div className="text-gray-900 leading-relaxed">
+                        <p className="mb-3 italic text-xs">"Strength is not for destruction, but for the protection of truth."</p>
+                        <p className="mb-3">
+                            Captured in the golden city of Lanka, Hanuman's tail was set on fire by the arrogant Ravana. But the blaze did not burn him; it became his greatest weapon of liberation.
+                        </p>
+                        <p>
+                            With a mighty roar, he leaped from rooftop to rooftop, turning the city of pride into a city of ash. He showed the world that no fortress is safe from the fire of a pure heart.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Page 5: Divine Devotion (Renumbered) */}
+                <div className="page bg-oldpaper p-8 text-sm">
+                    <h2 className="text-xl font-serif text-red-700 mb-4 border-b border-red-200 pb-2">IV. The Soul of Devotion</h2>
                     <div className="text-gray-900 leading-relaxed">
                         <p className="mb-3">
                             When asked where Sri Rama resided, Hanuman did not point to a temple or a book. Instead, he tore open his chest with his claws.
@@ -171,9 +185,9 @@ const FlipBook = ({ setIsBookOpen }: FlipBookProps) => {
                     </div>
                 </div>
 
-                {/* Page 5: The Eternal Protector */}
+                {/* Page 6: The Eternal Protector (Renumbered) */}
                 <div className="page bg-oldpaper p-8 text-sm">
-                    <h2 className="text-xl font-serif text-red-700 mb-4 border-b border-red-200 pb-2">IV. The Eternal Protector</h2>
+                    <h2 className="text-xl font-serif text-red-700 mb-4 border-b border-red-200 pb-2">V. The Eternal Protector</h2>
                     <div className="text-gray-900 leading-relaxed">
                         <p className="mb-3">
                             Blessed as a <strong>Chiranjeevi</strong> (Immortal), Hanuman resides among us even today. He is the guardian of the threshold, the dissipater of fear.

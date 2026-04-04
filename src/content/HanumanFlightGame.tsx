@@ -42,6 +42,8 @@ interface Cloud {
 interface BgMountain {
     x: number; y: number; width: number; height: number;
     speed: number; color: string;
+    hasTemple: boolean;
+    peakType: 'snowy' | 'rocky';
 }
 
 interface Star {
@@ -282,16 +284,23 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
         // Init BG Mountains
         const mountains: BgMountain[] = [];
+        const waterY = height - (height * 0.12);
         for (let i = 0; i < 6; i++) {
             mountains.push({
-                x: (width / 2) * i, y: height * 0.5, width: width * 0.8,
-                height: height * 0.55, speed: 0.3, color: '#4A5D4E'
+                x: (width / 2) * i, y: waterY - 120 - Math.random() * 100, 
+                width: width * 0.8, height: height * 0.55, 
+                speed: 0.3, color: '#4A5D4E',
+                hasTemple: Math.random() > 0.45,
+                peakType: Math.random() > 0.4 ? 'snowy' : 'rocky'
             });
         }
         for (let i = 0; i < 6; i++) {
             mountains.push({
-                x: (width / 1.5) * i, y: height * 0.65, width: width * 0.65,
-                height: height * 0.45, speed: 0.6, color: '#2D3A2F'
+                x: (width / 1.5) * i, y: waterY - 80 - Math.random() * 80, 
+                width: width * 0.65, height: height * 0.45, 
+                speed: 0.6, color: '#2D3A2F',
+                hasTemple: Math.random() > 0.85,
+                peakType: 'rocky'
             });
         }
         gameRef.current.bgMountains = mountains;
@@ -588,8 +597,106 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             });
 
             state.bgMountains.forEach((m) => {
-                ctx.fillStyle = m.color; ctx.globalAlpha = 0.5;
-                ctx.beginPath(); ctx.moveTo(m.x, waterY); ctx.lineTo(m.x + m.width / 2, m.y); ctx.lineTo(m.x + m.width, waterY); ctx.fill(); ctx.globalAlpha = 1;
+                const mPeakX = m.x + m.width / 2;
+                ctx.save();
+                
+                // 1. Shading Gradient for main body (Chiseled look)
+                const mGrad = ctx.createLinearGradient(mPeakX, m.y, mPeakX, waterY);
+                mGrad.addColorStop(0, '#334155'); 
+                mGrad.addColorStop(1, '#0F172A'); 
+                
+                ctx.fillStyle = mGrad;
+                ctx.globalAlpha = 0.7;
+                ctx.beginPath();
+                ctx.moveTo(m.x, waterY);
+                ctx.lineTo(mPeakX, m.y);
+                ctx.lineTo(m.x + m.width, waterY);
+                ctx.fill();
+
+                // 2. Rim Lighting (Highlights on the left)
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(m.x, waterY);
+                ctx.lineTo(mPeakX, m.y);
+                ctx.stroke();
+
+                // 3. Rocky Ridge Lines (Texture)
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.15)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(mPeakX, m.y);
+                ctx.lineTo(m.x + m.width * 0.4, waterY);
+                ctx.moveTo(mPeakX, m.y);
+                ctx.lineTo(m.x + m.width * 0.6, waterY);
+                ctx.stroke();
+
+                // 4. Snow Cap (Irregular/Jagged)
+                if (m.peakType === 'snowy') {
+                    const sH = m.height * 0.35;
+                    const sW = m.width * 0.35;
+                    const sGrad = ctx.createLinearGradient(mPeakX, m.y, mPeakX, m.y + sH);
+                    sGrad.addColorStop(0, '#FFFFFF');
+                    sGrad.addColorStop(1, 'rgba(240, 249, 255, 0.05)');
+                    
+                    ctx.fillStyle = sGrad;
+                    ctx.beginPath();
+                    ctx.moveTo(mPeakX - sW/2, m.y + sH);
+                    ctx.lineTo(mPeakX - sW/4, m.y + sH + 8); // Jagged drip
+                    ctx.lineTo(mPeakX, m.y + sH + 4);
+                    ctx.lineTo(mPeakX + sW/4, m.y + sH + 10); // Jagged drip
+                    ctx.lineTo(mPeakX + sW/2, m.y + sH);
+                    ctx.lineTo(mPeakX, m.y);
+                    ctx.fill();
+                }
+
+                // 5. Deep Shadow (Right side)
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+                ctx.beginPath();
+                ctx.moveTo(mPeakX, m.y);
+                ctx.lineTo(mPeakX + m.width/2.2, waterY);
+                ctx.lineTo(mPeakX, waterY);
+                ctx.fill();
+
+                // 6. Base Mist (Atmospheric depth)
+                const mistGrad = ctx.createLinearGradient(mPeakX, waterY - 50, mPeakX, waterY);
+                mistGrad.addColorStop(0, 'transparent');
+                mistGrad.addColorStop(1, 'rgba(255, 255, 255, 0.15)');
+                ctx.fillStyle = mistGrad;
+                ctx.beginPath();
+                ctx.moveTo(m.x, waterY - 50);
+                ctx.lineTo(m.x + m.width, waterY - 50);
+                ctx.lineTo(m.x + m.width, waterY);
+                ctx.lineTo(m.x, waterY);
+                ctx.fill();
+
+                // 7. Temple (Sacred presence)
+                if (m.hasTemple && m.y < waterY - 40) {
+                    ctx.globalAlpha = 1.0; // Full opacity for the sacred mandir
+                    ctx.fillStyle = '#451A03'; 
+                    const tW = 12; const tH = 16;
+                    const tX = mPeakX - tW / 2; const tY = m.y - tH;
+                    ctx.fillRect(tX, tY, tW, tH);
+                    ctx.beginPath();
+                    ctx.moveTo(tX - 5, tY);
+                    ctx.lineTo(tX + tW / 2, tY - 10);
+                    ctx.lineTo(tX + tW + 5, tY);
+                    ctx.fill();
+                    ctx.strokeStyle = '#EA580C'; 
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(tX + tW/2, tY - 10);
+                    ctx.lineTo(tX + tW/2, tY - 20);
+                    ctx.stroke();
+                    ctx.fillStyle = '#EA580C';
+                    ctx.beginPath();
+                    ctx.moveTo(tX + tW/2, tY - 20);
+                    ctx.lineTo(tX + tW/2 + 8, tY - 17);
+                    ctx.lineTo(tX + tW/2, tY - 14);
+                    ctx.fill();
+                }
+                
+                ctx.restore();
             });
 
             state.wildlife.forEach((b) => {
