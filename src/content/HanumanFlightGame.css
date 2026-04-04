@@ -100,6 +100,7 @@ canvas {
     height: 100%;
     background: radial-gradient(circle at center, rgba(255, 120, 0, 0.15) 0%, rgba(46, 16, 101, 0.8) 100%);
     display: flex;
+    box-sizing: border-box;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -108,12 +109,19 @@ canvas {
     text-align: center;
     z-index: 200;
     backdrop-filter: blur(12px);
+    overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+    .game-screen {
+        padding: 32px 24px;
+    }
 }
 
 .game-screen h1 {
     font-family: 'Cinzel', serif;
     font-weight: 900;
-    font-size: clamp(32px, 8vw, 54px);
+    font-size: clamp(24px, 8vw, 54px);
     margin-bottom: 6px;
     margin-top: 6px;
     background: linear-gradient(135deg, #FFD700, #FF7E5F, #FEB47B);
@@ -124,6 +132,22 @@ canvas {
     letter-spacing: 2px;
     line-height: 1.1;
     animation: float 4s ease-in-out infinite;
+}
+
+.scared-symbol {
+    font-size: 0.8em;
+    vertical-align: middle;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .game-screen h1 {
+        font-size: clamp(20px, 7.5vw, 32px);
+    }
+
+    .scared-symbol {
+        font-size: 0.7em;
+    }
 }
 
 @keyframes float {
@@ -148,6 +172,14 @@ canvas {
     opacity: 0.9;
 }
 
+@media (max-width: 768px) {
+    .subtitle {
+        font-size: 11px;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+    }
+}
+
 .divider {
     width: 150px;
     height: 2px;
@@ -166,8 +198,18 @@ canvas {
     color: #EEE;
     box-shadow: inset 0 0 30px rgba(74, 222, 128, 0.05);
     max-width: 600px;
-    width: 90%;
+    width: 100%;
+    box-sizing: border-box;
     position: relative;
+}
+
+@media (max-width: 768px) {
+    .story-box {
+        padding: 15px 20px !important;
+        font-size: 13px;
+        line-height: 1.5;
+        margin-bottom: 8px;
+    }
 }
 
 .story-box::before,
@@ -203,6 +245,15 @@ canvas {
     overflow: hidden;
 }
 
+@media (max-width: 768px) {
+    .game-btn {
+        padding: 14px 40px;
+        font-size: 15px;
+        margin: 8px;
+        letter-spacing: 2px;
+    }
+}
+
 .game-btn.primary {
     background: linear-gradient(135deg, #059669, #10B981);
     color: white;
@@ -233,6 +284,53 @@ canvas {
     backdrop-filter: blur(4px);
 }
 
+.end-screen-content {
+    width: 100%;
+    max-width: 500px;
+    padding: 0 40px;
+    /* Enhanced side padding */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 5;
+    position: relative;
+}
+
+.game-over-hanuman-icon {
+    height: 120px;
+    width: auto;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
+    animation: floating-icon 3s ease-in-out infinite;
+}
+
+@keyframes floating-icon {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@media (max-width: 768px) {
+    .end-screen-content {
+        padding: 15px 32px;
+        /* Breathable mobile padding */
+        max-width: 95%;
+    }
+
+    .game-over-hanuman-icon {
+        height: 150px;
+        margin-top: 0px;
+    }
+}
+
 .game-btn:hover {
     transform: translateY(-8px) scale(1.05);
     filter: brightness(1.1);
@@ -242,19 +340,21 @@ canvas {
     transform: translateY(-2px) scale(0.98);
 }
 
-.controls-hint {
-    margin-top: 20px;
-    display: flex;
-    gap: 40px;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 13px;
-    font-weight: 500;
-}
-
 .controls-hint span {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+@media (max-width: 768px) {
+    .controls-hint {
+        gap: 20px;
+        font-size: 11px;
+    }
+
+    .header-controls-hint {
+        display: none !important;
+    }
 }
 
 .final-score {
