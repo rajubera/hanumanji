@@ -192,6 +192,43 @@ button:focus-visible {
   right: -30px;
   top: 10px;
   cursor: pointer;
+  z-index: 200;
+}
+
+.book-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 80px;
+  background: rgba(251, 191, 36, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  color: #fbbf24;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.book-nav-btn:hover {
+  background: rgba(251, 191, 36, 0.3);
+  border-color: #fbbf24;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+}
+
+.prev-btn {
+  left: 5vw;
+}
+
+.next-btn {
+  right: 5vw;
 }
 
 #book-container {

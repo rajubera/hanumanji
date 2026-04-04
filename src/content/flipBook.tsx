@@ -48,6 +48,22 @@ const FlipBook = ({ setIsBookOpen }: FlipBookProps) => {
         <div className="relative flex flex-col items-center flip-book">
             <CloseIcon onClick={() => setIsBookOpen(false)}></CloseIcon>
 
+            {/* Navigation Buttons */}
+            <button 
+                className="book-nav-btn prev-btn" 
+                onClick={() => pageFlipRef.current?.flipPrev()}
+                aria-label="Previous Page"
+            >
+                ‹
+            </button>
+            <button 
+                className="book-nav-btn next-btn" 
+                onClick={() => pageFlipRef.current?.flipNext()}
+                aria-label="Next Page"
+            >
+                ›
+            </button>
+
             {/* Flipbook container */}
             <div ref={bookRef} className="flip-book shadow-xl">
                 <div className="page bg-oldpaper p-8">
