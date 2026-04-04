@@ -115,6 +115,7 @@ canvas {
     font-weight: 900;
     font-size: clamp(32px, 8vw, 54px);
     margin-bottom: 6px;
+    margin-top: 6px;
     background: linear-gradient(135deg, #FFD700, #FF7E5F, #FEB47B);
     background-clip: text;
     -webkit-background-clip: text;

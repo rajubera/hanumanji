@@ -803,13 +803,13 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     <div className="game-screen start-screen" style={{ pointerEvents: 'auto' }}>
                         <div className="start-screen-content-stack">
                             <div className="start-screen-hero-container">
-                                <img src={hanumanImg} alt="Hanumanji" className="start-screen-hero" style={{ height: '16vh' }} />
+                                <img src={hanumanImg} alt="Hanumanji" className="start-screen-hero" style={{ height: '20vh' }} />
                                 <div className="hero-glow"></div>
                             </div>
                             <h1 className="main-title">
                                 <span className="scared-symbol">🕉️</span> DIVINE FLIGHT <span className="scared-symbol">🕉️</span>
                             </h1>
-                             <p className="subtitle">Hanuman's Sacred Journey</p>
+                            <p className="subtitle">Hanuman's Sacred Journey</p>
                             <div className="divider"></div>
                             <div className="story-box">
                                 <p>With a roar that shakes the celestial peaks, young Hanuman leaps into the infinite blue—mistaking the blazing sun for a golden fruit! Dodge the ancient monoliths and fulfill the destiny of the Vanara prince.</p>
@@ -822,7 +822,9 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                             <button className="back-link-btn" onClick={onClose} title="Back to Aura" style={{ marginTop: '10px' }}>
                                 <span className="back-icon">←</span> BACK TO AURA
                             </button>
-                            <p className="publisher-attribution">Published by Aponiar</p>
+                            <p className="publisher-attribution">
+                                Published by <a href="https://aponiar.com" target="_blank" rel="noopener noreferrer">Aponiar</a>
+                            </p>
                         </div>
                     </div>
                 )}
@@ -840,8 +842,8 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
                         <div className="end-screen-content">
                             <img src={hanumanImg} alt="Hanumanji" className="game-over-hanuman-icon" />
-                             <h1 className="jayanti-greeting">DIVINE FLIGHT</h1>
-                             <p className="tagline-text">Hanuman's Sacred Journey</p>
+                            <h1 className="jayanti-greeting">DIVINE FLIGHT</h1>
+                            <p className="tagline-text">Hanuman's Sacred Journey</p>
 
                             <div className="score-focus">
                                 <span className="label">Journey Score</span>
@@ -851,14 +853,16 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                             <div className="stats-text-only">
                                 <span>ॐ Mantras: {mantraCount}</span>
                                 <span>🌸 Flowers: {flowerCount}</span>
-                                 <span>🏆 Best: {highScore}</span>
-                             </div>
+                                <span>🏆 Best: {highScore}</span>
+                            </div>
 
-                             <p className="publisher-attribution-end">Aponiar</p>
+                            <p className="publisher-attribution-end">
+                                <a href="https://aponiar.com" target="_blank" rel="noopener noreferrer">Aponiar</a>
+                            </p>
 
                             <div className="end-screen-actions">
                                 <div className="social-share-group">
-                                     <WhatsappShareButton
+                                    <WhatsappShareButton
                                         url={window.location.href}
                                         title={`I just completed a sacred journey in DIVINE FLIGHT - Hanuman's Sacred Journey! 🚩\nScore: ${score} | ॐ Mantras: ${mantraCount} | 🌸 Blossoms: ${flowerCount}\n\nPublished by Aponiar. Experience the flight here: `}
                                         separator=" "
@@ -866,7 +870,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                                         <WhatsappIcon size={40} round />
                                     </WhatsappShareButton>
 
-                                     <TwitterShareButton
+                                    <TwitterShareButton
                                         url={window.location.href}
                                         title={`I just completed a sacred journey in DIVINE FLIGHT - Hanuman's Sacred Journey! 🚩\nScore: ${score} | ॐ Mantras: ${mantraCount} | 🌸 Blossoms: ${flowerCount}\n\nExperience the flight #DivineFlight #Aponiar`}
                                     >

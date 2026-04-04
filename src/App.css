@@ -532,8 +532,17 @@ button:focus-visible {
 }
 
 @keyframes glowPulse {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.2); }
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
 }
 
 .game-icon {
@@ -673,8 +682,15 @@ button:focus-visible {
 }
 
 @keyframes tapPulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.05); }
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
 }
 
 .instruction-badge p {
@@ -687,7 +703,7 @@ button:focus-visible {
 }
 
 .game-over-hanuman-icon {
-  max-height: 15vh;
+  max-height: 20vh;
   width: auto;
   margin-bottom: 5px;
   filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.5));
@@ -1168,18 +1184,27 @@ button:focus-visible {
   font-weight: 700;
   letter-spacing: 2px;
   margin-bottom: 10px;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   font-family: 'Poppins', sans-serif;
   text-transform: uppercase;
 }
 
-.publisher-attribution-end {
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  margin-top: 15px;
-  font-weight: 800;
+.publisher-attribution a,
+.publisher-attribution-end a,
+.intro-publisher-link {
+  color: #fbbf24;
+  text-decoration: none;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.publisher-attribution a:hover,
+.publisher-attribution-end a:hover,
+.intro-publisher-link:hover {
+  color: #fff;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.8);
 }
 
 .game-exit-link {

@@ -38,7 +38,9 @@ export const IntroCard = ({
                     <div className="game-icon">🚩</div>
                     <div className="game-info">
                         <h3>DIVINE FLIGHT</h3>
-                        <p>Hanuman's Sacred Journey | Aponiar</p>
+                        <p>
+                            Hanuman's Sacred Journey | <a href="https://aponiar.com" target="_blank" rel="noopener noreferrer" className="intro-publisher-link">Aponiar</a>
+                        </p>
                     </div>
                 </div>
                 <div className="game-play-btn">Play Now</div>
