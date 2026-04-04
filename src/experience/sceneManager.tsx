@@ -42,6 +42,7 @@ export type ISceneManager = {
     emitter: EventTarget
     backgroundMusic: React.RefObject<HTMLAudioElement | null>
     animationQueue: Record<string, any> & { animate: () => void }[],
+    isAnimating: boolean,
     init: () => void
     animate: () => void
     createGradientTexture: () => THREE.CanvasTexture
@@ -54,6 +55,7 @@ export type ISceneManager = {
     startIntro: () => void
     markIntroComplete: () => void
     updateFogBasedOnZoom: () => void
+    stop: () => void
 }
 export const SceneEvents = {
     INTRO_STARTED: "intro:complete",
@@ -75,7 +77,11 @@ export const SceneManager: ISceneManager = {
     emitter: new EventTarget(),
     animationQueue: [],
     backgroundMusic: undefined!,
+    isAnimating: false,
     init: function () {
+        this.isIntroStarted = false;
+        this.isIntroComplete = false;
+        this.animationQueue = [];
         this.createScene();
         this.createCamera();
         this.createRenderer();
@@ -144,6 +150,13 @@ export const SceneManager: ISceneManager = {
         this.camera = camera;
     },
     createRenderer() {
+        // Cleanup old renderer if it exists
+        if (this.renderer) {
+            if (this.renderer.domElement && this.renderer.domElement.parentNode) {
+                this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
+            }
+            this.renderer.dispose();
+        }
 
         // Renderer
         const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -209,13 +222,23 @@ export const SceneManager: ISceneManager = {
 
 
 
-    animate: function () {
-        requestAnimationFrame(this.animate.bind(this));
-        this.animationQueue.forEach(({ animate }) => {
-            animate();
-        })
-        this.updateFogBasedOnZoom();
-        this.controls.update();
-        this.renderer.render(this.scene, this.camera);
+    stop: function () {
+        this.isAnimating = false;
+    },
+
+     animate: function () {
+        if (this.isAnimating) return;
+        this.isAnimating = true;
+        const animationLoop = () => {
+            if (!this.isAnimating) return;
+            requestAnimationFrame(animationLoop);
+            this.animationQueue.forEach(({ animate }) => {
+                animate();
+            })
+            this.updateFogBasedOnZoom();
+            this.controls.update();
+            this.renderer.render(this.scene, this.camera);
+        };
+        animationLoop();
     }
 } 

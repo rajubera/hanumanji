@@ -11,6 +11,7 @@ import {
     EmailIcon,
     LinkedinIcon
 } from 'react-share';
+import html2canvas from 'html2canvas';
 import './HanumanFlightGame.css';
 
 interface Hanuman {
@@ -85,6 +86,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
     const scoreRef = useRef(0);
     const audioCtxRef = useRef<AudioContext | null>(null);
+    const isSharingRef = useRef(false);
 
     const playBell = useCallback((freq: number) => {
         try {
@@ -105,6 +107,99 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             osc.stop(ctx.currentTime + 1.2);
         } catch (e) { /* Audio Context fallback */ }
     }, []);
+
+    const handleShareImage = async () => {
+        if (isSharingRef.current) return;
+        isSharingRef.current = true;
+
+        const element = document.querySelector('.end-screen-content') as HTMLElement;
+        if (!element) {
+            alert("Could not find the score screen content.");
+            isSharingRef.current = false;
+            return;
+        }
+
+        try {
+            // Capture the element as a high-res image with a custom background
+            const canvas = await html2canvas(element, {
+                backgroundColor: null,
+                useCORS: true,
+                scale: 3, // Premium quality
+                logging: false,
+                onclone: (clonedDoc) => {
+                    const el = clonedDoc.querySelector('.end-screen-content') as HTMLElement;
+                    if (el) {
+                        // Create a beautiful "Card" look for the shared image
+                        el.style.width = '550px';
+                        el.style.height = 'auto';
+                        el.style.padding = '80px 40px';
+                        el.style.margin = '0 auto';
+                        el.style.borderRadius = '0';
+                        el.style.border = '10px solid rgba(251, 191, 36, 0.3)';
+                        el.style.boxShadow = 'none';
+                        el.style.display = 'flex';
+                        el.style.flexDirection = 'column';
+                        el.style.alignItems = 'center';
+                        el.style.justifyContent = 'center';
+                        
+                        // Signature Cinematic Gradient Background
+                        el.style.background = 'linear-gradient(180deg, #1E1B4B 0%, #4C1D95 35%, #BE123C 75%, #F59E0B 100%)';
+
+                        // Ensure all text elements are white and have high contrast
+                        const allText = el.querySelectorAll('span, p, h1, h2, div');
+                        allText.forEach(t => {
+                            (t as HTMLElement).style.color = '#FFFFFF';
+                            (t as HTMLElement).style.textShadow = '0 6px 15px rgba(0,0,0,0.9)';
+                            (t as HTMLElement).style.opacity = '1';
+                        });
+
+                        // Hide the share icons from the screenshot itself as it looks meta/cluttered
+                        const icons = el.querySelector('.social-share-group');
+                        if (icons) (icons as HTMLElement).style.display = 'none';
+                        
+                        // Add a title prefix if missing
+                        const title = el.querySelector('h2');
+                        if (title) title.innerText = "🚩 DIVINE BLESSING 🚩";
+                    }
+                }
+            });
+
+            canvas.toBlob(async (blob) => {
+                if (!blob) {
+                    isSharingRef.current = false;
+                    return;
+                }
+                const file = new File([blob], 'HanumanBlessing.png', { type: 'image/png' });
+
+                if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: "Hanuman's Divine Flight Blessing",
+                            text: `I just completed a divine journey with Hanuman ji! 🚩\nJourney Score: ${scoreRef.current} | ॐ Mantras: ${mantraCount} | 🌸 Blossoms: ${flowerCount}\nExperience the aura: ${window.location.origin}`
+                        });
+                    } catch (err) {
+                        if ((err as Error).name !== 'AbortError') {
+                            console.error('Sharing failed', err);
+                        }
+                    }
+                } else {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url; a.download = 'HanumanBlessing.png';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                    alert('Divine Blessing Card downloaded! Now you can share it manually. 🙏🚩');
+                }
+                isSharingRef.current = false;
+            }, 'image/png', 1.0);
+        } catch (err) {
+            console.error('Screenshot failed', err);
+            isSharingRef.current = false;
+            alert("Failed to capture the blessing card. Please try again.");
+        }
+    };
+
     const gameRef = useRef({
         hanuman: {
             x: 80, y: 320, width: 50, height: 50,
@@ -391,9 +486,9 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 if (Math.random() > 0.4) {
                     const types = ['mantra_om', 'lotus', 'hibiscus', 'jasmine'] as const;
                     const randomType = types[Math.floor(Math.random() * types.length)];
-                    state.lotuses.push({ 
-                        x: width + state.obstacleWidth / 2, 
-                        y: topH + state.gap / 2, 
+                    state.lotuses.push({
+                        x: width + state.obstacleWidth / 2,
+                        y: topH + state.gap / 2,
                         collected: false,
                         type: randomType
                     });
@@ -407,9 +502,9 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     obs.scored = true; obs.onFire = true;
                     createFireParticles(obs.x, obs.topHeight, obs.bottomY);
                 }
-                if (state.hanuman.x + state.hanuman.width - 12 > obs.x && 
+                if (state.hanuman.x + state.hanuman.width - 12 > obs.x &&
                     state.hanuman.x + 12 < obs.x + state.obstacleWidth) {
-                    if (state.hanuman.y + 12 < obs.topHeight || 
+                    if (state.hanuman.y + 12 < obs.topHeight ||
                         state.hanuman.y + state.hanuman.height - 12 > obs.bottomY) endGame();
                 }
                 if (obs.x + state.obstacleWidth < 0) state.obstacles.splice(index, 1);
@@ -422,10 +517,10 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
             state.lotuses.forEach((l, index) => {
                 l.x -= state.obstacleSpeed;
-                if (!l.collected && 
+                if (!l.collected &&
                     Math.abs(state.hanuman.x + state.hanuman.width / 2 - l.x) < 35 &&
                     Math.abs(state.hanuman.y + state.hanuman.height / 2 - l.y) < 35) {
-                    l.collected = true; 
+                    l.collected = true;
                     scoreRef.current += 5; setScore(scoreRef.current);
                     if (l.type?.startsWith('mantra')) {
                         setMantraCount(prev => prev + 1); playBell(660);
@@ -442,12 +537,12 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             const { width, height } = dimensions;
             const waterHeight = height * 0.12;
             const waterY = height - waterHeight;
-            
+
             ctx.clearRect(0, 0, width, height);
-            
+
             const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
-            skyGrad.addColorStop(0, '#1E1B4B'); skyGrad.addColorStop(0.3, '#312E81'); 
-            skyGrad.addColorStop(0.6, '#4C1D95'); skyGrad.addColorStop(0.85, '#BE123C'); 
+            skyGrad.addColorStop(0, '#1E1B4B'); skyGrad.addColorStop(0.3, '#312E81');
+            skyGrad.addColorStop(0.6, '#4C1D95'); skyGrad.addColorStop(0.85, '#BE123C');
             skyGrad.addColorStop(1, '#F59E0B');
             ctx.fillStyle = skyGrad; ctx.fillRect(0, 0, width, height);
 
@@ -550,7 +645,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
             // Simplified Stone Monoliths (Grounded & Clean)
             state.obstacles.forEach((obs) => {
-                const w = state.obstacleWidth; 
+                const w = state.obstacleWidth;
                 const stoneColor = obs.onFire ? '#064E3B' : '#2D3A2F';
                 const shadowColor = obs.onFire ? 'rgba(74, 222, 128, 0.3)' : 'rgba(0,0,0,0.3)';
                 const highlightColor = 'rgba(255, 255, 255, 0.05)';
@@ -564,7 +659,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     ctx.lineTo(obs.x + w * 0.8, obs.topHeight);
                     ctx.lineTo(obs.x + w * 0.2, obs.topHeight);
                     ctx.closePath(); ctx.fill();
-                    
+
                     // Simple Highlight
                     ctx.strokeStyle = highlightColor; ctx.lineWidth = 1;
                     ctx.beginPath(); ctx.moveTo(obs.x + w * 0.2, obs.topHeight);
@@ -578,7 +673,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     ctx.shadowBlur = 12; ctx.shadowColor = shadowColor;
                     ctx.fillStyle = stoneColor;
                     // Rise from absolute bottom
-                    ctx.beginPath(); ctx.moveTo(obs.x - 5, height); 
+                    ctx.beginPath(); ctx.moveTo(obs.x - 5, height);
                     ctx.lineTo(obs.x + w + 5, height);
                     ctx.lineTo(obs.x + w * 0.7, obs.bottomY);
                     ctx.lineTo(obs.x + w * 0.3, obs.bottomY);
@@ -603,17 +698,17 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 ctx.save(); ctx.translate(l.x, l.y);
                 const pulse = (Math.sin(state.frameCount * 0.08) + 1) / 2;
                 const type = l.type || 'om';
-                
+
                 // Blessing Aura with Type-Specific Color
-                const auraColor = type.startsWith('mantra') ? 'rgba(251, 191, 36, 0.4)' : 
-                                 type === 'hibiscus' ? 'rgba(239, 68, 68, 0.35)' :
-                                 type === 'jasmine' ? 'rgba(255, 255, 255, 0.4)' :
-                                 'rgba(244, 114, 182, 0.35)'; // Default Pink
+                const auraColor = type.startsWith('mantra') ? 'rgba(251, 191, 36, 0.4)' :
+                    type === 'hibiscus' ? 'rgba(239, 68, 68, 0.35)' :
+                        type === 'jasmine' ? 'rgba(255, 255, 255, 0.4)' :
+                            'rgba(244, 114, 182, 0.35)'; // Default Pink
 
                 const bGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, 32 + pulse * 12);
                 bGrad.addColorStop(0, auraColor); bGrad.addColorStop(1, 'transparent');
                 ctx.fillStyle = bGrad; ctx.beginPath(); ctx.arc(0, 0, 32 + pulse * 12, 0, Math.PI * 2); ctx.fill();
-                
+
                 if (type.startsWith('mantra')) {
                     ctx.fillStyle = '#FFFBEB'; ctx.shadowBlur = 15; ctx.shadowColor = '#F59E0B';
                     ctx.font = 'bold 28px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -623,30 +718,30 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     const color = type === 'hibiscus' ? '#EF4444' : type === 'jasmine' ? '#FEF3C7' : '#F472B6';
                     ctx.fillStyle = color; ctx.shadowBlur = 12; ctx.shadowColor = color;
                     for (let i = 0; i < (type === 'hibiscus' ? 5 : 8); i++) {
-                        ctx.save(); ctx.rotate((Math.PI*2/(type === 'hibiscus' ? 5 : 8))*i);
-                        ctx.beginPath(); ctx.ellipse(0, -12, 8, type === 'jasmine' ? 18 : 14, 0, 0, Math.PI*2); ctx.fill(); ctx.restore();
+                        ctx.save(); ctx.rotate((Math.PI * 2 / (type === 'hibiscus' ? 5 : 8)) * i);
+                        ctx.beginPath(); ctx.ellipse(0, -12, 8, type === 'jasmine' ? 18 : 14, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
                     }
-                    ctx.fillStyle = '#F59E0B'; ctx.beginPath(); ctx.arc(0, 0, 6, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#F59E0B'; ctx.beginPath(); ctx.arc(0, 0, 6, 0, Math.PI * 2); ctx.fill();
                 }
                 ctx.restore();
             });
 
             const h = state.hanuman;
             ctx.save(); ctx.translate(h.x + h.width / 2, h.y + h.height / 2); ctx.rotate(h.rotation);
-            
+
             const s = h.width / 40;
-            ctx.strokeStyle = '#3F2C23'; ctx.lineWidth = 4*s; ctx.beginPath(); ctx.moveTo(15*s, 0); ctx.quadraticCurveTo(32*s, -16*s, 36*s, -6*s); ctx.stroke();
-            ctx.fillStyle = '#B45309'; ctx.beginPath(); ctx.ellipse(0, 5*s, 14*s, 18*s, 0, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#F59E0B'; ctx.beginPath(); ctx.moveTo(-14*s, 8*s); ctx.lineTo(14*s, 8*s); ctx.lineTo(10*s, 22*s); ctx.lineTo(-10*s, 22*s); ctx.fill();
-            ctx.fillStyle = '#444'; ctx.fillRect(16*s, 11*s, 3.5*s, 22*s);
-            ctx.fillStyle = '#92400E'; ctx.beginPath(); ctx.arc(17.5*s, 11*s, 7*s, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#78350F'; ctx.beginPath(); ctx.arc(0, -11*s, 17*s, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#D97706'; ctx.beginPath(); ctx.ellipse(0, -9*s, 12.5*s, 14*s, 0, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#FFF'; ctx.beginPath(); ctx.arc(-6.5*s, -11*s, 5.5*s, 0, Math.PI*2); ctx.arc(6.5*s, -11*s, 5.5*s, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(-6.5*s, -11*s, 3.5*s, 0, Math.PI*2); ctx.arc(6.5*s, -11*s, 3.5*s, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#FBBF24'; ctx.beginPath(); ctx.moveTo(-12*s, -22*s); ctx.lineTo(0, -32*s); ctx.lineTo(12*s, -22*s); ctx.fill();
-            ctx.fillStyle = '#B91C1C'; ctx.beginPath(); ctx.arc(0, -26*s, 3*s, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#991B1B'; ctx.beginPath(); ctx.ellipse(0, -15*s, 2.5*s, 5*s, 0, 0, Math.PI*2); ctx.fill();
+            ctx.strokeStyle = '#3F2C23'; ctx.lineWidth = 4 * s; ctx.beginPath(); ctx.moveTo(15 * s, 0); ctx.quadraticCurveTo(32 * s, -16 * s, 36 * s, -6 * s); ctx.stroke();
+            ctx.fillStyle = '#B45309'; ctx.beginPath(); ctx.ellipse(0, 5 * s, 14 * s, 18 * s, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#F59E0B'; ctx.beginPath(); ctx.moveTo(-14 * s, 8 * s); ctx.lineTo(14 * s, 8 * s); ctx.lineTo(10 * s, 22 * s); ctx.lineTo(-10 * s, 22 * s); ctx.fill();
+            ctx.fillStyle = '#444'; ctx.fillRect(16 * s, 11 * s, 3.5 * s, 22 * s);
+            ctx.fillStyle = '#92400E'; ctx.beginPath(); ctx.arc(17.5 * s, 11 * s, 7 * s, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#78350F'; ctx.beginPath(); ctx.arc(0, -11 * s, 17 * s, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#D97706'; ctx.beginPath(); ctx.ellipse(0, -9 * s, 12.5 * s, 14 * s, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#FFF'; ctx.beginPath(); ctx.arc(-6.5 * s, -11 * s, 5.5 * s, 0, Math.PI * 2); ctx.arc(6.5 * s, -11 * s, 5.5 * s, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(-6.5 * s, -11 * s, 3.5 * s, 0, Math.PI * 2); ctx.arc(6.5 * s, -11 * s, 3.5 * s, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#FBBF24'; ctx.beginPath(); ctx.moveTo(-12 * s, -22 * s); ctx.lineTo(0, -32 * s); ctx.lineTo(12 * s, -22 * s); ctx.fill();
+            ctx.fillStyle = '#B91C1C'; ctx.beginPath(); ctx.arc(0, -26 * s, 3 * s, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#991B1B'; ctx.beginPath(); ctx.ellipse(0, -15 * s, 2.5 * s, 5 * s, 0, 0, Math.PI * 2); ctx.fill();
             ctx.restore();
         };
 
@@ -657,14 +752,14 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     return (
         <div className="game-page-wrapper">
             <div className="game-container" ref={containerRef}>
-                <canvas 
-                    ref={canvasRef} 
-                    width={dimensions.width} 
+                <canvas
+                    ref={canvasRef}
+                    width={dimensions.width}
                     height={dimensions.height}
                     onClick={jump}
                     onTouchStart={(e) => { e.preventDefault(); jump(); }}
                 />
-                
+
                 <div className="game-ui">
                     <div className="score-display">{score}</div>
                     <div className="collection-counters">
@@ -690,7 +785,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
                 {!gameStarted && !gameOver && (
                     <div className="game-screen start-screen" style={{ pointerEvents: 'auto' }}>
-                        <h1>🙏 HANUMAN'S DIVINE FLIGHT</h1>
+                        <h1>🙏 DIVINE FLIGHT 🙏</h1>
                         <p className="subtitle">THE LEGEND OF BAL HANUMAN</p>
                         <div className="divider"></div>
                         <div className="story-box">
@@ -716,10 +811,10 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         <div className="guardian-mandir left"></div>
                         <div className="guardian-mandir right"></div>
                         <div className="jayanti-water"></div>
-                        
+
                         <div className="end-screen-content">
                             <h1 className="jayanti-greeting">JAI HANUMAN 🙏</h1>
-                            
+
                             <div className="score-focus">
                                 <span className="label">Journey Score</span>
                                 <span className="value">{score}</span>
@@ -733,37 +828,37 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
                             <div className="end-screen-actions">
                                 <div className="social-share-group">
-                                    <WhatsappShareButton 
-                                        url={window.location.href} 
+                                    <WhatsappShareButton
+                                        url={window.location.href}
                                         title={`I just completed a divine journey with Hanuman ji! 🚩\nScore: ${score} | ॐ Mantras: ${mantraCount} | 🌸 Blossoms: ${flowerCount}\n\nExperience the flight here: `}
                                         separator=" "
                                     >
                                         <WhatsappIcon size={40} round />
                                     </WhatsappShareButton>
 
-                                    <TwitterShareButton 
-                                        url={window.location.href} 
+                                    <TwitterShareButton
+                                        url={window.location.href}
                                         title={`I just completed a divine journey with Hanuman ji! 🚩\nScore: ${score} | ॐ Mantras: ${mantraCount} | 🌸 Blossoms: ${flowerCount}\n\nExperience the flight #HanumanFlight #Divine`}
                                     >
                                         <TwitterIcon size={40} round />
                                     </TwitterShareButton>
 
-                                    <FacebookShareButton 
-                                        url={window.location.href} 
+                                    <FacebookShareButton
+                                        url={window.location.href}
                                         hashtag="#HanumanFlight"
                                     >
                                         <FacebookIcon size={40} round />
                                     </FacebookShareButton>
 
-                                    <EmailShareButton 
-                                        url={window.location.href} 
+                                    <EmailShareButton
+                                        url={window.location.href}
                                         subject="Hanuman's Divine Flight - My High Score!"
                                         body={`I just completed a divine journey with Hanuman ji! 🚩\n\nMy Stats:\n- Journey Score: ${score}\n- ॐ Mantras: ${mantraCount}\n- 🌸 Blossoms: ${flowerCount}\n\nExperience the flight here: `}
                                     >
                                         <EmailIcon size={40} round />
                                     </EmailShareButton>
 
-                                    <LinkedinShareButton 
+                                    <LinkedinShareButton
                                         url={window.location.href}
                                         title="Hanuman's Divine Flight - My High Score!"
                                         summary={`I just completed a divine journey with Hanuman ji! 🚩\nScore: ${score} | ॐ Mantras: ${mantraCount} | 🌸 Blossoms: ${flowerCount}`}
@@ -771,6 +866,10 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                                     >
                                         <LinkedinIcon size={40} round />
                                     </LinkedinShareButton>
+
+                                    <button className="share-screenshot-btn" onClick={handleShareImage} title="Download/Share Blessing Card">
+                                        <span className="camera-icon">📸</span>
+                                    </button>
                                 </div>
                                 <div className="button-group">
                                     <button className="game-btn primary" onClick={startGame}>Replay</button>

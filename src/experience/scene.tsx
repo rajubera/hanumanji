@@ -14,16 +14,19 @@ export const Scene = () => {
     SceneManager.init();
 
     useEffect(() => {
-        const { camera } = SceneManager;
-        camera.position.set(...SceneManager.initialPosition);
-        camera.lookAt(0, 0, 0);
         SceneManager.animate();
-        window.addEventListener("resize", () => {
+        const handleResize = () => {
             const { camera, renderer } = SceneManager;
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        };
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            SceneManager.stop();
+            window.removeEventListener("resize", handleResize);
+        };
     }, []);
     return <>
         <Sky></Sky>
