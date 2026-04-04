@@ -33,7 +33,7 @@ canvas {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 24px;
+    padding: 32px;
     pointer-events: none;
     z-index: 100;
 }
@@ -69,10 +69,10 @@ canvas {
 
 .close-game-btn {
     position: absolute;
-    top: 24px;
-    right: 24px;
+    top: 32px;
+    right: 70px;
     width: 44px;
-    height: 44px;
+    height: 48px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
