@@ -26,23 +26,23 @@ const FlipBook = ({ setIsBookOpen }: FlipBookProps) => {
                 showCover: false,
                 autoSize: true,
                 maxShadowOpacity: 0,
-                disableFlipByClick: true
-
+                disableFlipByClick: true,
+                showPageCorners: true,
+                usePortrait: true,
+                startZIndex: 2
             });
 
             pageFlip.loadFromHTML(bookRef.current.querySelectorAll(".page"));
             pageFlipRef.current = pageFlip;
+            (window as any)['pageFlip'] = pageFlip;
 
             // Debug state
             console.log("FlipBook initialized:", pageFlip);
             pageFlip.on('flip', (e) => {
-                console.log("Current page:", e.data);
+                console.log("Current page:", e, e.data);
             });
             window.addEventListener("resize", () => {
-                // pageFlip.upda({
-                //     width: window.innerWidth / 2,
-                //     height: window.innerHeight,
-                // });
+                pageFlip.update();
             });
         }
 
@@ -50,24 +50,36 @@ const FlipBook = ({ setIsBookOpen }: FlipBookProps) => {
 
 
 
+    const handleNext = () => {
+        const pf = pageFlipRef.current;
+        if (pf) pf.flipNext();
+    };
+
+    const handlePrev = () => {
+        const pf = pageFlipRef.current;
+        if (pf) pf.flipPrev();
+    };
+
     return (
         <div className="book-narrative-overlay">
-            <CloseIcon onClick={() => setIsBookOpen(false)}></CloseIcon>
+            <button className="book-close-btn" onClick={() => setIsBookOpen(false)} aria-label="Close Book">
+                <CloseIcon />
+            </button>
 
             {/* Navigation Buttons */}
-            <button 
-                className="book-nav-btn prev-btn" 
-                onClick={() => pageFlipRef.current?.flipPrev()}
+            <button
+                className="book-nav-btn prev-btn"
+                onClick={handlePrev}
                 aria-label="Previous Page"
             >
-                ‹
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
             </button>
-            <button 
-                className="book-nav-btn next-btn" 
-                onClick={() => pageFlipRef.current?.flipNext()}
+            <button
+                className="book-nav-btn next-btn"
+                onClick={handleNext}
                 aria-label="Next Page"
             >
-                ›
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
             </button>
 
             {/* Flipbook container */}
@@ -119,7 +131,7 @@ const FlipBook = ({ setIsBookOpen }: FlipBookProps) => {
                             Long ago, as the sun rose over the groves of Kishkindha, the young Hanuman looked up and saw a brilliant, glowing fruit in the sky.
                         </p>
                         <p className="mb-3">
-                            With a roar that startled the gods, he took a mighty leap—not of mere physical strength, but of pure, innocent devotion. 
+                            With a roar that startled the gods, he took a mighty leap—not of mere physical strength, but of pure, innocent devotion.
                         </p>
                         <p>
                             Mistaking the blazing Sun God for a divine fruit, he flew through the celestial spheres, demonstrating the limitless potential of a soul guided by courage.
@@ -151,7 +163,7 @@ const FlipBook = ({ setIsBookOpen }: FlipBookProps) => {
                             When asked where Sri Rama resided, Hanuman did not point to a temple or a book. Instead, he tore open his chest with his claws.
                         </p>
                         <p className="mb-3">
-                            There, etched into his very heart, were the images of Rama and Sita. 
+                            There, etched into his very heart, were the images of Rama and Sita.
                         </p>
                         <p>
                             This act revealed the true nature of <strong>Bhakti</strong>: that the divine is not found in the external world, but is the very fabric of our being when we surrender in love.

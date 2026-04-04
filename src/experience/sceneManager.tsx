@@ -71,7 +71,7 @@ export const SceneManager: ISceneManager = {
     initialPosition: [0, 60, 410],
     initialIntroPosition: [0, 10, 1110],
     defaultPosition: [0, 1.3, 7.5],
-    introDuration: 1, // seconds for intro
+    introDuration: 15, // seconds for intro
     isIntroStarted: false,
     isIntroComplete: false,
     emitter: new EventTarget(),
