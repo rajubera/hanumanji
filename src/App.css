@@ -308,19 +308,23 @@ button:focus-visible {
 
 .floating-menu {
   position: fixed;
-  width: 61px;
+  width: auto;
   bottom: 20px;
   height: auto;
-  padding: 15px 0;
-  pointer-events: all;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .floating-menu.right {
-  right: 30px;
+  right: 20px;
+  align-items: flex-end;
 }
 
 .floating-menu.left {
-  left: 30px;
+  left: 20px;
+  align-items: flex-start;
 }
 
 .floating-menu-item {
@@ -328,6 +332,7 @@ button:focus-visible {
   justify-content: center;
   align-items: center;
   color: var(--hm-safron-color);
+  pointer-events: auto;
 }
 
 .floating-menu-item .icon {
@@ -360,8 +365,42 @@ button:focus-visible {
 
 .book-wrapper {
   position: relative;
-  display: inline-block;
+  display: flex !important;
+  align-items: center;
+  gap: 14px;
   cursor: pointer;
+  padding: 10px 22px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  border-radius: 50px;
+  border: 1.5px solid rgba(251, 191, 36, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.book-wrapper:hover {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: rgba(251, 191, 36, 0.6);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(251, 191, 36, 0.3);
+}
+
+.book-label {
+  color: var(--hm-safron-color);
+  font-family: 'Cinzel', serif;
+  font-weight: 800;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  white-space: nowrap;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+  transition: all 0.3s ease;
+}
+
+.book-wrapper:hover .book-label {
+  color: #fff;
+  text-shadow: 0 0 15px rgba(251, 191, 36, 0.8);
 }
 
 .aura {

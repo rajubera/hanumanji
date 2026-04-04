@@ -3,7 +3,7 @@ import FlipBook from "./flipBook"
 import { Header } from "./header"
 import FloatingMenu, { type IFloatingMenuItem } from "./floatingMenu"
 import { useState } from "react"
-import { AudioDisabled, AudioEnabled, BookOpen } from "./icons"
+import { AudioDisabled, AudioEnabled, BookOpen, HomeIcon } from "./icons"
 
 export const ContentLayout = () => {
     const [isBookOpen, setIsBookOpen] = useState(false);
@@ -34,6 +34,11 @@ export const ContentLayout = () => {
         {
             icon: <AudioControl />, name: 'audio_control'
         },
+        {
+            icon: <div className="book-wrapper" data-tooltip-id="globalTooltip" data-tooltip-content="Go Home"><HomeIcon /></div>, 
+            name: 'home_control', 
+            onClick: () => SceneManager.resetIntro()
+        }
 
     ];
     return <>

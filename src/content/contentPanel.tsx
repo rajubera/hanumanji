@@ -11,9 +11,15 @@ export const ContentPanel = () => {
         const fn = () => {
             setIsIntroComplete(true)
         };
+        const resetFn = () => {
+            setIsIntroStarted(false);
+            setIsIntroComplete(false);
+        }
         SceneManager.emitter.addEventListener(SceneEvents.INTRO_COMPLETE, fn);
-        return ()=>{
+        SceneManager.emitter.addEventListener(SceneEvents.INTRO_RESET, resetFn);
+        return () => {
             SceneManager.emitter.removeEventListener(SceneEvents.INTRO_COMPLETE, fn)
+            SceneManager.emitter.removeEventListener(SceneEvents.INTRO_RESET, resetFn)
         }
     }, [])
 

@@ -56,10 +56,12 @@ export type ISceneManager = {
     markIntroComplete: () => void
     updateFogBasedOnZoom: () => void
     stop: () => void
+    resetIntro: () => void
 }
 export const SceneEvents = {
-    INTRO_STARTED: "intro:complete",
-    INTRO_COMPLETE: "intro:complete"
+    INTRO_STARTED: "intro:started",
+    INTRO_COMPLETE: "intro:complete",
+    INTRO_RESET: "intro:reset"
 }
 export const SceneManager: ISceneManager = {
     scene: undefined!,      // <-- definite assignment
@@ -218,6 +220,20 @@ export const SceneManager: ISceneManager = {
             SceneManager.backgroundMusic.current.volume = 0.2;
             SceneManager.backgroundMusic.current?.play()
         }
+    },
+
+    resetIntro() {
+        this.isIntroStarted = false;
+        this.isIntroComplete = false;
+        if (this.backgroundMusic.current) {
+            this.backgroundMusic.current.pause();
+            this.backgroundMusic.current.currentTime = 0;
+        }
+        // Force camera to initial intro position
+        this.camera.position.set(...this.initialIntroPosition);
+        this.controls.update();
+        // Emit event to notify UI
+        this.emitter.dispatchEvent(new CustomEvent(SceneEvents.INTRO_RESET));
     },
 
 
