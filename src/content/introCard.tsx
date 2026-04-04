@@ -37,8 +37,8 @@ export const IntroCard = ({
                 <div className="game-entry-content">
                     <div className="game-icon">🚩</div>
                     <div className="game-info">
-                        <h3>Hanuman's Flight</h3>
-                        <p>Guided by devotion, fly to the sun!</p>
+                        <h3>DIVINE FLIGHT</h3>
+                        <p>Hanuman's Sacred Journey | Aponiar</p>
                     </div>
                 </div>
                 <div className="game-play-btn">Play Now</div>
