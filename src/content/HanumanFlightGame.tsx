@@ -801,18 +801,27 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
                 {!gameStarted && !gameOver && (
                     <div className="game-screen start-screen" style={{ pointerEvents: 'auto' }}>
-                        <h1>🙏 DIVINE FLIGHT 🙏</h1>
-                        <p className="subtitle">THE LEGEND OF BAL HANUMAN</p>
-                        <div className="divider"></div>
-                        <div className="story-box">
-                            <p>When young Hanuman mistook the sun for a ripe mango, he flew towards it with divine speed!</p>
-                            <p style={{ marginTop: '10px' }}>Guide him through the sacred mountains and collect lotuses for extra points.</p>
-                        </div>
-                        <button className="game-btn primary main-start-btn" onClick={startGame}>Begin Journey</button>
-                        <button className="game-exit-link" onClick={onClose}>← Back to Aura</button>
-                        <div className="controls-hint">
-                            <span>🖱️ Click to Fly</span>
-                            <span>⌨️ Space to Jump</span>
+                        <div className="start-screen-content-stack">
+                            <div className="start-screen-hero-container">
+                                <img src={hanumanImg} alt="Hanumanji" className="start-screen-hero" style={{ height: '16vh' }} />
+                                <div className="hero-glow"></div>
+                            </div>
+                            <h1 className="main-title">
+                                <span className="scared-symbol">🕉️</span> DIVINE FLIGHT <span className="scared-symbol">🕉️</span>
+                            </h1>
+                            <p className="subtitle">THE INFINITE LEAP OF BAL HANUMAN</p>
+                            <div className="divider"></div>
+                            <div className="story-box">
+                                <p>With a roar that shakes the celestial peaks, young Hanuman leaps into the infinite blue—mistaking the blazing sun for a golden fruit! Dodge the ancient monoliths and fulfill the destiny of the Vanara prince.</p>
+                            </div>
+                            <button className="game-btn primary main-start-btn" onClick={startGame}>BEGIN JOURNEY</button>
+                            <div className="header-controls-hint">
+                                <span>🖱️ CLICK TO FLY</span>
+                                <span>⌨️ SPACE TO JUMP</span>
+                            </div>
+                            <button className="back-link-btn" onClick={onClose} title="Back to Aura" style={{ marginTop: '10px' }}>
+                                <span className="back-icon">←</span> BACK TO AURA
+                            </button>
                         </div>
                     </div>
                 )}
@@ -830,7 +839,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
                         <div className="end-screen-content">
                             <img src={hanumanImg} alt="Hanumanji" className="game-over-hanuman-icon" />
-                            <h1 className="jayanti-greeting">JAI HANUMAN 🙏</h1>
+                            <h1 className="jayanti-greeting">DIVINE FLIGHT</h1>
 
                             <div className="score-focus">
                                 <span className="label">Journey Score</span>

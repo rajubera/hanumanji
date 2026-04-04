@@ -53,7 +53,7 @@ canvas {
 
 .high-score-display {
     position: absolute;
-    top: 130px;
+    top: 150px;
     left: 50%;
     transform: translateX(-50%);
     font-size: 13px;
@@ -114,7 +114,7 @@ canvas {
     font-family: 'Cinzel', serif;
     font-weight: 900;
     font-size: clamp(32px, 8vw, 54px);
-    margin-bottom: 12px;
+    margin-bottom: 6px;
     background: linear-gradient(135deg, #FFD700, #FF7E5F, #FEB47B);
     background-clip: text;
     -webkit-background-clip: text;
@@ -126,15 +126,22 @@ canvas {
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .subtitle {
     font-family: 'Cinzel', serif;
     color: #4ADE80;
     font-size: 14px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     letter-spacing: 4px;
     font-weight: 700;
     opacity: 0.9;
@@ -144,14 +151,14 @@ canvas {
     width: 150px;
     height: 2px;
     background: linear-gradient(90deg, transparent, #4ADE80, transparent);
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .story-box {
     background: rgba(20, 50, 20, 0.2);
     padding: 32px;
     border-radius: 30px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     font-size: 16px;
     line-height: 1.8;
     border: 1px solid rgba(74, 222, 128, 0.2);
@@ -162,15 +169,23 @@ canvas {
     position: relative;
 }
 
-.story-box::before, .story-box::after {
+.story-box::before,
+.story-box::after {
     content: 'ॐ';
     position: absolute;
     color: rgba(255, 215, 0, 0.2);
     font-size: 24px;
 }
 
-.story-box::before { top: 10px; left: 10px; }
-.story-box::after { bottom: 10px; right: 10px; }
+.story-box::before {
+    top: 10px;
+    left: 10px;
+}
+
+.story-box::after {
+    bottom: 10px;
+    right: 10px;
+}
 
 .game-btn {
     padding: 20px 60px;
@@ -227,7 +242,7 @@ canvas {
 }
 
 .controls-hint {
-    margin-top: 40px;
+    margin-top: 20px;
     display: flex;
     gap: 40px;
     color: rgba(255, 255, 255, 0.5);
@@ -252,7 +267,18 @@ canvas {
 }
 
 @keyframes pulse {
-    0% { transform: scale(1); filter: brightness(1); }
-    50% { transform: scale(1.05); filter: brightness(1.2); }
-    100% { transform: scale(1); filter: brightness(1); }
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+        filter: brightness(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
 }

@@ -472,6 +472,70 @@ button:focus-visible {
   gap: 12px;
 }
 
+.start-screen-content-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 450px;
+  gap: 2px;
+}
+
+.start-screen-header {
+  display: none;
+}
+
+.start-screen-hero-container {
+  position: relative;
+  margin-bottom: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.start-screen-hero {
+  height: 16vh;
+  width: auto;
+  filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4));
+  animation: floatSway 4s infinite ease-in-out;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: 1;
+  animation: glowPulse 3s infinite ease-in-out;
+}
+
+.main-title {
+  font-size: 1.1rem;
+  font-weight: 900;
+  margin: 0;
+  color: #fbbf24;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+  letter-spacing: 2.5px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.scared-symbol {
+  -webkit-text-fill-color: #fbbf24 !important;
+  color: #fbbf24 !important;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+  display: inline-block;
+  opacity: 1 !important;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.2); }
+}
+
 .game-icon {
   font-size: 24px;
   background: rgba(255, 255, 255, 0.1);
@@ -548,13 +612,26 @@ button:focus-visible {
   backdrop-filter: blur(10px);
   padding: 10px 20px;
   border-radius: 15px;
+}
+
+.back-link-btn {
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #FFF;
+  color: #FEF3C7;
   font-weight: 800;
-  font-size: 1.4rem;
-  font-family: 'Cinzel Decorative', serif;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  margin-top: 10px;
+  font-size: 0.9rem;
+  padding: 10px 25px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-link-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
 }
 
 .tap-to-start-overlay {
@@ -963,12 +1040,36 @@ button:focus-visible {
 }
 
 .jayanti-greeting {
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   font-weight: 950;
   color: #fff;
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
   margin-bottom: 2px;
   letter-spacing: 1px;
+}
+
+.story-box {
+  margin-bottom: 5px;
+  padding: 8px 15px;
+  line-height: 1.3;
+}
+
+.story-box {
+  background: rgba(30, 27, 75, 0.4);
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  margin: 2px 0;
+}
+
+.story-box p {
+  font-size: 0.9rem;
+  font-style: italic;
+  opacity: 0.9;
+  letter-spacing: 0.2px;
+  line-height: 1.3;
+  margin: 0;
+  text-align: center;
 }
 
 .score-focus {
@@ -1044,9 +1145,12 @@ button:focus-visible {
 }
 
 .main-start-btn {
-  width: 100%;
-  max-width: 320px;
-  margin: 10px 0 25px 0 !important;
+  width: auto;
+  min-width: 180px;
+  margin: 5px 0 !important;
+  white-space: nowrap;
+  padding: 10px 20px;
+  font-size: 0.9rem;
 }
 
 .game-exit-link {
@@ -1125,7 +1229,6 @@ button:focus-visible {
   border: 1.5px solid rgba(255, 255, 255, 0.3) !important;
   color: #fff !important;
   font-weight: 800 !important;
-  flex: 1;
 }
 
 .game-btn:hover {
