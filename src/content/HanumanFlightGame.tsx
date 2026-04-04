@@ -86,6 +86,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const [isFlying, setIsFlying] = useState(false);
     const [highScore, setHighScore] = useState(Number(localStorage.getItem('hanumanHighScore')) || 0);
     const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
+    const [isAssetLoaded, setIsAssetLoaded] = useState(false);
 
     const scoreRef = useRef(0);
     const audioCtxRef = useRef<AudioContext | null>(null);
@@ -96,7 +97,10 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     useEffect(() => {
         const img = new Image();
         img.src = hanumanImg;
-        img.onload = () => { hanumanImgRef.current = img; };
+        img.onload = () => { 
+            hanumanImgRef.current = img; 
+            setIsAssetLoaded(true);
+        };
     }, []);
 
     const playBell = useCallback((freq: number) => {
@@ -910,18 +914,24 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     <div className="game-screen start-screen" style={{ pointerEvents: 'auto' }}>
                         <div className="start-screen-content-stack">
                             <div className="start-screen-hero-container">
-                                <img src={hanumanImg} alt="Hanumanji" className="start-screen-hero" style={{ height: '16vh' }} />
+                                <img src={hanumanImg} alt="Hanumanji" className="start-screen-hero" style={{ height: '12vh' }} />
                                 <div className="hero-glow"></div>
                             </div>
-                            <h1 className="main-title">
+                            <h1 className="main-title" style={{ marginBottom: '5px' }}>
                                 <span className="scared-symbol">🕉️</span> DIVINE FLIGHT <span className="scared-symbol">🕉️</span>
                             </h1>
                             <p className="subtitle">Hanuman's Sacred Journey</p>
-                            <div className="divider"></div>
-                            <div className="story-box">
+                            <div className="divider" style={{ margin: '8px 0' }}></div>
+                            <div className="story-box" style={{ padding: '10px 15px' }}>
                                 <p>With a roar that shakes the celestial peaks, young Hanuman leaps into the infinite blue—mistaking the blazing sun for a golden fruit! Dodge the ancient monoliths and fulfill the destiny of the Vanara prince.</p>
                             </div>
-                            <button className="game-btn primary main-start-btn" onClick={startGame}>BEGIN JOURNEY</button>
+                            <button 
+                                className={`game-btn primary main-start-btn ${!isAssetLoaded ? 'opacity-50 cursor-not-allowed' : ''}`} 
+                                onClick={() => isAssetLoaded && startGame()}
+                                disabled={!isAssetLoaded}
+                            >
+                                {isAssetLoaded ? 'BEGIN JOURNEY' : 'LOADING DIVINE ASSETS...'}
+                            </button>
                             <div className="header-controls-hint">
                                 <span>🖱️ CLICK TO FLY</span>
                                 <span>⌨️ SPACE TO JUMP</span>

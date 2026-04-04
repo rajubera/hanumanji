@@ -1,5 +1,6 @@
 import { SceneManager } from "../experience";
 import panchmukhiHanuman from '../assets/images/panchmukhi-1.png';
+import hanumanImg from '../assets/images/hanumanji-flying.png';
 
 export const IntroCard = ({ 
     setIsIntroStarted, 
@@ -44,6 +45,11 @@ export const IntroCard = ({
                     </div>
                 </div>
                 <div className="game-play-btn">Play Now</div>
+            </div>
+            
+            {/* Asset Preloader (Hidden) */}
+            <div style={{ display: 'none' }}>
+                <img src={hanumanImg} alt="" />
             </div>
         </div>
     </>
