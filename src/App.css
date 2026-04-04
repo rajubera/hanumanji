@@ -176,13 +176,23 @@ button:focus-visible {
 }
 
 
-/* FlipBook container */
-.flip-book {
+.book-narrative-overlay {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.flip-book-container {
   width: 80vw;
-  height: calc(100vh - 50px);
+  height: min(80vh, 600px);
   margin: auto;
-  /* box-shadow: 0 0 40px rgba(0, 0, 0, 0.4); */
   border-radius: 8px;
+  position: relative;
+  z-index: 50;
 }
 
 .book-close-icon {
@@ -196,39 +206,40 @@ button:focus-visible {
 }
 
 .book-nav-btn {
-  position: absolute;
+  position: fixed;
   top: 50%;
   transform: translateY(-50%);
-  width: 50px;
-  height: 80px;
-  background: rgba(251, 191, 36, 0.15);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(251, 191, 36, 0.3);
+  width: 60px;
+  height: 100px;
+  background: rgba(20, 50, 20, 0.4);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(74, 222, 128, 0.3);
   color: #fbbf24;
-  font-size: 3rem;
+  font-size: 4rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 100;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   user-select: none;
 }
 
 .book-nav-btn:hover {
-  background: rgba(251, 191, 36, 0.3);
+  background: rgba(251, 191, 36, 0.2);
   border-color: #fbbf24;
   color: #fff;
-  box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+  box-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+  transform: translateY(-50%) scale(1.1);
 }
 
 .prev-btn {
-  left: 5vw;
+  left: 3vw;
 }
 
 .next-btn {
-  right: 5vw;
+  right: 3vw;
 }
 
 #book-container {

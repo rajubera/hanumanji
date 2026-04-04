@@ -45,7 +45,7 @@ const FlipBook = ({ setIsBookOpen }: FlipBookProps) => {
 
 
     return (
-        <div className="relative flex flex-col items-center flip-book">
+        <div className="book-narrative-overlay">
             <CloseIcon onClick={() => setIsBookOpen(false)}></CloseIcon>
 
             {/* Navigation Buttons */}
@@ -65,7 +65,7 @@ const FlipBook = ({ setIsBookOpen }: FlipBookProps) => {
             </button>
 
             {/* Flipbook container */}
-            <div ref={bookRef} className="flip-book shadow-xl">
+            <div ref={bookRef} className="flip-book-container shadow-xl">
                 <div className="page bg-oldpaper p-8">
                     <h1 className="text-2xl font-serif text-red-800 text-center">
                         ॥ ॐ श्री हनुमते नमः ॥
