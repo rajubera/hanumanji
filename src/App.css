@@ -905,9 +905,10 @@ button:focus-visible {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  overflow: hidden !important;
   position: relative;
-  padding: 40px 0 !important;
+  padding: 20px 0 !important;
+  min-height: auto;
   /* Vertical space for content, 0 horizontal for mandirs */
 }
 
@@ -1144,14 +1145,14 @@ button:focus-visible {
 
 /* High-Contrast Glassmorphic UI - Indigo Tinted for White Text Pop */
 .end-screen-content {
-  top: -20px;
   position: relative;
   z-index: 50;
   width: 90%;
   max-width: 400px;
-  max-height: 80vh;
-  /* Reduced to ensure centering */
-  padding: 35px 25px;
+  max-height: 90vh;
+  /* Increased to ensure centering and visibility */
+  padding: 25px 20px;
+  /* More compact padding */
   text-align: center;
   flex-shrink: 0;
   /* Prevent squashing */
@@ -1163,8 +1164,6 @@ button:focus-visible {
   box-shadow:
     0 40px 120px rgba(0, 0, 0, 0.9),
     0 0 60px rgba(234, 88, 12, 0.2);
-  overflow-y: auto;
-  scrollbar-width: none;
 }
 
 .jayanti-greeting {
@@ -1299,6 +1298,15 @@ button:focus-visible {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   font-family: 'Poppins', sans-serif;
   text-transform: uppercase;
+}
+
+.publisher-attribution-end {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 10px 0;
+  font-weight: 600;
 }
 
 .publisher-attribution a,
