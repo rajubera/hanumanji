@@ -97,8 +97,8 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     useEffect(() => {
         const img = new Image();
         img.src = hanumanImg;
-        img.onload = () => { 
-            hanumanImgRef.current = img; 
+        img.onload = () => {
+            hanumanImgRef.current = img;
             setIsAssetLoaded(true);
         };
     }, []);
@@ -218,7 +218,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const gameRef = useRef({
         hanuman: {
             x: 80, y: 320, width: 110, height: 70,
-            velocity: 0, gravity: 0.45, jump: -8.0, rotation: 0
+            velocity: 0, gravity: 0.15, jump: -5.2, rotation: 0
         } as Hanuman,
         obstacles: [] as Obstacle[],
         lotuses: [] as Lotus[],
@@ -235,7 +235,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         frameCount: 0,
         gap: 300,
         obstacleSpeed: 3,
-        spawnRate: 110,
+        spawnRate: 360,
         obstacleWidth: 60,
         isGameOver: false,
         isGameStarted: false,
@@ -291,8 +291,8 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         const waterY = height - (height * 0.12);
         for (let i = 0; i < 6; i++) {
             mountains.push({
-                x: (width / 2) * i, y: waterY - 120 - Math.random() * 100, 
-                width: width * 0.8, height: height * 0.55, 
+                x: (width / 2) * i, y: waterY - 120 - Math.random() * 100,
+                width: width * 0.8, height: height * 0.55,
                 speed: 0.3, color: '#4A5D4E',
                 hasTemple: Math.random() > 0.45,
                 peakType: Math.random() > 0.4 ? 'snowy' : 'rocky'
@@ -300,8 +300,8 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         }
         for (let i = 0; i < 6; i++) {
             mountains.push({
-                x: (width / 1.5) * i, y: waterY - 80 - Math.random() * 80, 
-                width: width * 0.65, height: height * 0.45, 
+                x: (width / 1.5) * i, y: waterY - 80 - Math.random() * 80,
+                width: width * 0.65, height: height * 0.45,
                 speed: 0.6, color: '#2D3A2F',
                 hasTemple: Math.random() > 0.85,
                 peakType: 'rocky'
@@ -404,7 +404,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 ...gameRef.current.hanuman, y: dimensions.height / 2, velocity: 0, rotation: 0
             },
             obstacles: [], lotuses: [], fireParticles: [], frameCount: 0,
-            gap: 300, obstacleSpeed: 3, spawnRate: 110
+            gap: 300, obstacleSpeed: 1.2, spawnRate: 360
         };
     };
 
@@ -439,41 +439,44 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             }
         };
 
-        const loop = () => {
-            update();
+        let lastTime = performance.now();
+        const loop = (currentTime: number) => {
+            const dt = Math.min(2.0, (currentTime - lastTime) / (1000 / 60));
+            lastTime = currentTime;
+            update(dt || 1);
             draw(ctx);
             animationFrameId = requestAnimationFrame(loop);
         };
 
-        const update = () => {
+        const update = (dt: number) => {
             const state = gameRef.current;
             const { width, height } = dimensions;
-            state.frameCount++;
+            state.frameCount += dt;
             state.sunPulse = Math.sin(state.frameCount * 0.04) * 6;
             const globalSpeed = state.isGameStarted && !state.isGameOver && state.isFlying ? state.obstacleSpeed : 1.5;
 
             state.windLines.forEach((w) => {
-                w.x -= w.speed;
+                w.x -= w.speed * dt;
                 if (w.x + w.length < 0) { w.x = width + 200; w.y = Math.random() * height; }
             });
 
             state.foregroundLeaves.forEach((l) => {
-                l.x -= l.speed; l.angle += 0.05;
+                l.x -= l.speed * dt; l.angle += 0.05 * dt;
                 if (l.x + l.size < 0) { l.x = width + 100; l.y = height - 20 - Math.random() * 100; }
             });
 
             state.wildlife.forEach((b) => {
-                b.x -= b.speed + (globalSpeed * 0.2); b.wingPhase += 0.15;
+                b.x -= (b.speed + (globalSpeed * 0.2)) * dt; b.wingPhase += 0.15 * dt;
                 if (b.x + 100 < 0) { b.x = width + 100; b.y = 50 + Math.random() * 200; }
             });
 
             state.envParticles.forEach((p) => {
-                p.x -= 0.5 + p.vx + (globalSpeed * 0.5); p.y += p.vy; p.pulse += 0.05;
+                p.x -= (0.5 + p.vx + (globalSpeed * 0.5)) * dt; p.y += p.vy * dt; p.pulse += 0.05 * dt;
                 if (p.x < 0) p.x = width; if (p.y < 0) p.y = height; if (p.y > height) p.y = 0;
             });
 
             state.groundSegments.forEach((seg) => {
-                seg.x -= globalSpeed * 2.2;
+                seg.x -= globalSpeed * 2.2 * dt;
                 if (seg.x + seg.width < 0) {
                     seg.x = width; seg.height = 30 + Math.random() * 50;
                     seg.type = (['rock', 'foliage', 'slope'] as const)[Math.floor(Math.random() * 3)];
@@ -482,28 +485,29 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
             if (!state.isGameStarted || state.isGameOver || !state.isFlying) return;
 
-            state.stars.forEach((s) => { s.twinkle += 0.04; });
-            state.bgMountains.forEach((m) => { m.x -= m.speed; if (m.x + m.width < 0) m.x = width; });
+            state.stars.forEach((s) => { s.twinkle += 0.04 * dt; });
+            state.bgMountains.forEach((m) => { m.x -= m.speed * dt; if (m.x + m.width < 0) m.x = width; });
             state.forestTrees.forEach((t) => {
-                t.x -= t.speed; if (t.x + t.width < 0) t.x = width + Math.random() * 100;
+                t.x -= t.speed * dt; if (t.x + t.width < 0) t.x = width + Math.random() * 100;
             });
 
             const currentScore = scoreRef.current;
-            state.obstacleSpeed = 3.5 + (currentScore * 0.07);
-            state.gap = Math.max(160, 220 - (currentScore * 0.7));
+            const speedBase = 1.2 + (currentScore * 0.02);
+            state.obstacleSpeed = speedBase; // Remove scaling for Zen predictability
+            state.gap = Math.max(200, 280 - (currentScore * 0.3));
 
-            state.hanuman.velocity += state.hanuman.gravity;
-            state.hanuman.y += state.hanuman.velocity;
+            state.hanuman.velocity += state.hanuman.gravity * dt;
+            state.hanuman.y += state.hanuman.velocity * dt;
             state.hanuman.rotation = Math.min(Math.max(state.hanuman.velocity * 0.04, -0.4), 0.4);
 
             if (state.hanuman.y + state.hanuman.height > height * 0.95 || state.hanuman.y < 0) endGame();
 
             state.clouds.forEach((cloud) => {
-                cloud.x -= cloud.speed + (globalSpeed * 0.1);
+                cloud.x -= (cloud.speed + (globalSpeed * 0.1)) * dt;
                 if (cloud.x + cloud.width < 0) { cloud.x = width; cloud.y = Math.random() * 300; }
             });
 
-            if (state.frameCount % state.spawnRate === 0) {
+            if (Math.floor(state.frameCount / state.spawnRate) > Math.floor((state.frameCount - dt) / state.spawnRate)) {
                 const minH = 120; const maxH = height - state.gap - minH;
                 const topH = minH + Math.random() * (maxH - minH);
                 state.obstacles.push({ x: width, topHeight: topH, bottomY: topH + state.gap, scored: false });
@@ -520,7 +524,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             }
 
             state.obstacles.forEach((obs, index) => {
-                obs.x -= state.obstacleSpeed;
+                obs.x -= state.obstacleSpeed * dt;
                 if (!obs.scored && obs.x + state.obstacleWidth < state.hanuman.x) {
                     scoreRef.current += 1; setScore(scoreRef.current);
                     obs.scored = true; obs.onFire = true;
@@ -535,12 +539,12 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             });
 
             state.fireParticles.forEach((p, index) => {
-                p.x += p.vx; p.y += p.vy; p.life -= 0.02; p.size *= 0.95;
+                p.x += p.vx * dt; p.y += p.vy * dt; p.life -= 0.02 * dt; p.size *= 0.95;
                 if (p.life <= 0) state.fireParticles.splice(index, 1);
             });
 
             state.lotuses.forEach((l, index) => {
-                l.x -= state.obstacleSpeed;
+                l.x -= state.obstacleSpeed * dt;
                 if (!l.collected &&
                     Math.abs(state.hanuman.x + state.hanuman.width / 2 - l.x) < 35 &&
                     Math.abs(state.hanuman.y + state.hanuman.height / 2 - l.y) < 35) {
@@ -603,12 +607,12 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             state.bgMountains.forEach((m) => {
                 const mPeakX = m.x + m.width / 2;
                 ctx.save();
-                
+
                 // 1. Shading Gradient for main body (Chiseled look)
                 const mGrad = ctx.createLinearGradient(mPeakX, m.y, mPeakX, waterY);
-                mGrad.addColorStop(0, '#334155'); 
-                mGrad.addColorStop(1, '#0F172A'); 
-                
+                mGrad.addColorStop(0, '#334155');
+                mGrad.addColorStop(1, '#0F172A');
+
                 ctx.fillStyle = mGrad;
                 ctx.globalAlpha = 0.7;
                 ctx.beginPath();
@@ -642,14 +646,14 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     const sGrad = ctx.createLinearGradient(mPeakX, m.y, mPeakX, m.y + sH);
                     sGrad.addColorStop(0, '#FFFFFF');
                     sGrad.addColorStop(1, 'rgba(240, 249, 255, 0.05)');
-                    
+
                     ctx.fillStyle = sGrad;
                     ctx.beginPath();
-                    ctx.moveTo(mPeakX - sW/2, m.y + sH);
-                    ctx.lineTo(mPeakX - sW/4, m.y + sH + 8); // Jagged drip
+                    ctx.moveTo(mPeakX - sW / 2, m.y + sH);
+                    ctx.lineTo(mPeakX - sW / 4, m.y + sH + 8); // Jagged drip
                     ctx.lineTo(mPeakX, m.y + sH + 4);
-                    ctx.lineTo(mPeakX + sW/4, m.y + sH + 10); // Jagged drip
-                    ctx.lineTo(mPeakX + sW/2, m.y + sH);
+                    ctx.lineTo(mPeakX + sW / 4, m.y + sH + 10); // Jagged drip
+                    ctx.lineTo(mPeakX + sW / 2, m.y + sH);
                     ctx.lineTo(mPeakX, m.y);
                     ctx.fill();
                 }
@@ -658,7 +662,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
                 ctx.beginPath();
                 ctx.moveTo(mPeakX, m.y);
-                ctx.lineTo(mPeakX + m.width/2.2, waterY);
+                ctx.lineTo(mPeakX + m.width / 2.2, waterY);
                 ctx.lineTo(mPeakX, waterY);
                 ctx.fill();
 
@@ -677,7 +681,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 // 7. Temple (Sacred presence)
                 if (m.hasTemple && m.y < waterY - 40) {
                     ctx.globalAlpha = 1.0; // Full opacity for the sacred mandir
-                    ctx.fillStyle = '#451A03'; 
+                    ctx.fillStyle = '#451A03';
                     const tW = 12; const tH = 16;
                     const tX = mPeakX - tW / 2; const tY = m.y - tH;
                     ctx.fillRect(tX, tY, tW, tH);
@@ -686,20 +690,20 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     ctx.lineTo(tX + tW / 2, tY - 10);
                     ctx.lineTo(tX + tW + 5, tY);
                     ctx.fill();
-                    ctx.strokeStyle = '#EA580C'; 
+                    ctx.strokeStyle = '#EA580C';
                     ctx.lineWidth = 1.5;
                     ctx.beginPath();
-                    ctx.moveTo(tX + tW/2, tY - 10);
-                    ctx.lineTo(tX + tW/2, tY - 20);
+                    ctx.moveTo(tX + tW / 2, tY - 10);
+                    ctx.lineTo(tX + tW / 2, tY - 20);
                     ctx.stroke();
                     ctx.fillStyle = '#EA580C';
                     ctx.beginPath();
-                    ctx.moveTo(tX + tW/2, tY - 20);
-                    ctx.lineTo(tX + tW/2 + 8, tY - 17);
-                    ctx.lineTo(tX + tW/2, tY - 14);
+                    ctx.moveTo(tX + tW / 2, tY - 20);
+                    ctx.lineTo(tX + tW / 2 + 8, tY - 17);
+                    ctx.lineTo(tX + tW / 2, tY - 14);
                     ctx.fill();
                 }
-                
+
                 ctx.restore();
             });
 
@@ -872,7 +876,7 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             ctx.restore();
         };
 
-        loop();
+        requestAnimationFrame(loop);
         return () => cancelAnimationFrame(animationFrameId);
     }, [dimensions, endGame]);
 
@@ -925,8 +929,8 @@ const HanumanFlightGame: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                             <div className="story-box" style={{ padding: '10px 15px' }}>
                                 <p>With a roar that shakes the celestial peaks, young Hanuman leaps into the infinite blue—mistaking the blazing sun for a golden fruit! Dodge the ancient monoliths and fulfill the destiny of the Vanara prince.</p>
                             </div>
-                            <button 
-                                className={`game-btn primary main-start-btn ${!isAssetLoaded ? 'opacity-50 cursor-not-allowed' : ''}`} 
+                            <button
+                                className={`game-btn primary main-start-btn ${!isAssetLoaded ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 onClick={() => isAssetLoaded && startGame()}
                                 disabled={!isAssetLoaded}
                             >

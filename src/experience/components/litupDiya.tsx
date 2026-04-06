@@ -24,7 +24,8 @@ export const LitUpDiyaBtn = () => {
   return <>
     <button className="litup-btn action-menu-button hm-btn" onClick={addNewDiya} title="Light up virtual Diya"
     >
-      🪔 Light up virtual Diya
+      🪔 <span className="hide-on-mobile">Light up virtual Diya</span>
+      <span className="show-on-mobile" style={{ display: 'none' }}>Light up</span>
     </button>
   </>
 }

@@ -511,14 +511,51 @@ button:focus-visible {
 }
 
 
-/* mobile fix */
+/* mobile fix - Unified Dock Navigation */
 @media only screen and (max-width: 600px) {
+  #overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
   .floating-menu.right {
-    right: 20px;
+    right: 15px;
+    bottom: 25px;
   }
 
   .floating-menu.left {
-    left: 20px;
+    left: 15px;
+    bottom: 25px;
+  }
+
+  /* Hide labels on mobile to prevent overlap */
+  .book-label,
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  .show-on-mobile {
+    display: inline !important;
+  }
+
+  .litup-btn {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    padding: 12px 18px;
+    white-space: nowrap;
+    z-index: 1000;
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+    border: 1px solid rgba(251, 191, 36, 0.5);
+    background: rgba(15, 23, 42, 0.8) !important;
+    backdrop-filter: blur(10px);
+    color: #fbbf24 !important;
+  }
+
+  .floating-menu {
+    gap: 10px;
   }
 }
 
